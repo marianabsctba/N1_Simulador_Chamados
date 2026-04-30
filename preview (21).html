@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>N1 SOC: Fecha ou Escala? — Consultoria Be Safe</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700;800&family=Dancing+Script:wght@700&family=Literata:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --surface2: #1c2130;
+  --border: #30363d;
+  --text: #e6edf3;
+  --text2: #8b949e;
+  --accent: #f78166;
+  --accent2: #79c0ff;
+  --green: #3fb950;
+  --yellow: #d29922;
+  --red: #f85149;
+  --purple: #bc8cff;
+  --orange: #ffa657;
+  --radius: 8px;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Syne', sans-serif;
+  --cursive: 'Dancing Script', cursive;
+}
+.light {
+  --bg: #f0f2f5;
+  --surface: #ffffff;
+  --surface2: #f6f8fa;
+  --border: #d0d7de;
+  --text: #1f2328;
+  --text2: #636c76;
+  --accent: #cf222e;
+  --accent2: #0969da;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
+  font-size: 15px;
+}
+/* SCREEN SYSTEM */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* HEADER */
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo { font-weight: 800; font-size: 16px; letter-spacing: -0.5px; }
+.logo span { color: var(--accent); }
+.header-controls { display: flex; gap: 8px; align-items: center; }
+.btn-icon {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 6px 10px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 14px;
+  font-family: var(--sans);
+  transition: all 0.15s;
+}
+.btn-icon:hover { border-color: var(--accent2); }
+
+/* WELCOME SCREEN */
+.welcome-wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+.badge {
+  display: inline-block;
+  background: rgba(247,129,102,0.15);
+  color: var(--accent);
+  border: 1px solid rgba(247,129,102,0.3);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.welcome-title {
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -1.5px;
+  margin-bottom: 12px;
+}
+.welcome-title em { color: var(--accent); font-style: normal; }
+.welcome-sub {
+  color: var(--text2);
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 32px;
+  font-family: 'Literata', serif;
+}
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.info-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+.info-card .label { font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+.info-card .value { font-size: 18px; font-weight: 700; }
+.rules-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 32px;
+}
+.rules-box h3 { font-size: 13px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; }
+.rules-box ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.rules-box li { font-size: 14px; color: var(--text2); padding-left: 16px; position: relative; }
+.rules-box li::before { content: '›'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 14px 32px;
+  border-radius: var(--radius);
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  width: 100%;
+}
+.btn-primary:hover { opacity: 0.85; }
+.name-input {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  font-family: var(--sans);
+  font-size: 15px;
+  width: 100%;
+  margin-bottom: 16px;
+  transition: border-color 0.15s;
+}
+.name-input:focus { outline: none; border-color: var(--accent2); }
+.name-input::placeholder { color: var(--text2); }
+
+/* GAME SCREEN */
+.game-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: calc(100vh - 57px);
+}
+@media(max-width: 700px) {
+  .game-layout { grid-template-columns: 1fr; }
+  .sidebar {
+    display: block;
+    position: sticky;
+    top: 57px;
+    height: auto;
+    max-height: 190px;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    overflow-y: hidden;
+    z-index: 80;
+  }
+  #ticket-list {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(178px, 220px);
+    gap: 8px;
+    padding-bottom: 6px;
+  }
+  .ticket-item { margin-bottom: 0; }
+  .main-panel { max-height: none; padding: 16px; }
+  .score-bar { flex-wrap: wrap; gap: 10px 14px; padding: 10px 14px; }
+  .score-item { min-width: 70px; }
+}
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 16px;
+  overflow-y: auto;
+  height: calc(100vh - 57px);
+  position: sticky;
+  top: 57px;
+}
+.sidebar-title {
+  font-size: 11px;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+.ticket-item {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+}
+.ticket-item:hover { border-color: var(--accent2); }
+.ticket-item.active { border-color: var(--accent2); background: rgba(121,192,255,0.08); }
+.ticket-item.done-ok { border-left: 3px solid var(--green); opacity: 0.6; }
+.ticket-item.done-bad { border-left: 3px solid var(--red); opacity: 0.6; }
+.ticket-id { font-size: 11px; color: var(--text2); font-family: var(--mono); }
+.ticket-title-sm { font-size: 13px; font-weight: 600; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.prio-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.prio-critica { background: rgba(248,81,73,0.2); color: var(--red); }
+.prio-alta { background: rgba(255,166,87,0.2); color: var(--orange); }
+.prio-media { background: rgba(210,153,34,0.2); color: var(--yellow); }
+.prio-baixa { background: rgba(63,185,80,0.2); color: var(--green); }
+
+/* MAIN PANEL */
+.main-panel {
+  padding: 24px;
+  overflow-y: auto;
+  max-height: calc(100vh - 57px);
+}
+.ticket-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.ticket-num { font-family: var(--mono); font-size: 13px; color: var(--text2); margin-bottom: 4px; }
+.ticket-title-lg { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; }
+.timer-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 16px;
+  text-align: center;
+  min-width: 90px;
+  flex-shrink: 0;
+}
+.timer-label { font-size: 10px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.8px; }
+.timer-val { font-family: var(--mono); font-size: 22px; font-weight: 700; }
+.timer-val.urgent { color: var(--red); animation: pulse 0.8s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.meta-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+}
+.meta-label { font-size: 10px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 2px; }
+.meta-val { font-size: 13px; font-weight: 600; }
+
+.section-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.section-head {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  background: var(--surface2);
+}
+.section-body { padding: 16px; }
+
+.log-block {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: #a9b1bd;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.log-block .log-warn { color: var(--yellow); }
+.log-block .log-err { color: var(--red); }
+.log-block .log-ok { color: var(--green); }
+.log-block .log-info { color: var(--accent2); }
+
+.timeline { display: flex; flex-direction: column; gap: 12px; }
+.tl-item { display: flex; gap: 12px; align-items: flex-start; }
+.tl-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--border);
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+.tl-dot.warn { background: var(--yellow); }
+.tl-dot.err { background: var(--red); }
+.tl-dot.ok { background: var(--green); }
+.tl-dot.info { background: var(--accent2); }
+.tl-time { font-family: var(--mono); font-size: 11px; color: var(--text2); min-width: 50px; flex-shrink: 0; }
+.tl-text { font-size: 13px; line-height: 1.5; }
+
+/* ACTIONS */
+.actions-area {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 32px;
+}
+.actions-title { font-size: 12px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 16px; font-weight: 700; }
+.action-btns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+.action-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+  line-height: 1.3;
+}
+.action-btn:hover { border-color: var(--accent2); background: rgba(121,192,255,0.08); }
+.action-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* FEEDBACK */
+.feedback-box {
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 20px;
+  display: none;
+}
+.feedback-box.show { display: block; }
+.feedback-box.correct { background: rgba(63,185,80,0.12); border: 1px solid rgba(63,185,80,0.4); }
+.feedback-box.wrong { background: rgba(248,81,73,0.12); border: 1px solid rgba(248,81,73,0.4); }
+.feedback-box.partial { background: rgba(210,153,34,0.12); border: 1px solid rgba(210,153,34,0.4); }
+.feedback-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+.feedback-text { font-size: 14px; line-height: 1.6; color: var(--text2); font-family: 'Literata', serif; }
+
+/* SCORE BAR */
+.score-bar {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  position: sticky;
+  bottom: 0;
+  font-size: 13px;
+  z-index: 90;
+}
+.score-item { display: flex; flex-direction: column; }
+.score-label { font-size: 10px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.6px; }
+.score-val { font-weight: 700; font-size: 16px; }
+.progress-wrap { flex: 1; background: var(--border); border-radius: 20px; height: 6px; overflow: hidden; min-width: 80px; }
+.progress-fill { height: 100%; background: var(--green); border-radius: 20px; transition: width 0.4s; }
+
+/* RESULTS SCREEN */
+.results-wrap { max-width: 640px; margin: 0 auto; padding: 48px 24px; text-align: center; }
+.results-score-big { font-size: 80px; font-weight: 800; letter-spacing: -4px; margin: 24px 0; }
+.results-score-big.pass { color: var(--green); }
+.results-score-big.fail { color: var(--red); }
+.results-subtitle { font-size: 18px; color: var(--text2); font-family: 'Literata', serif; margin-bottom: 32px; }
+.results-breakdown {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: left;
+  margin-bottom: 32px;
+}
+.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+.breakdown-row:last-child { border-bottom: none; }
+
+/* CERTIFICATE */
+#cert-canvas { border-radius: 8px; max-width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+.cert-wrap { text-align: center; padding: 24px; }
+.cert-actions { display: flex; gap: 12px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+
+/* EMPTY STATE */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  color: var(--text2);
+  gap: 12px;
+}
+.empty-state .big { font-size: 48px; }
+.empty-state p { font-size: 15px; font-family: 'Literata', serif; text-align: center; max-width: 300px; }
+
+/* SIREN ANIMATION */
+@keyframes siren { 0%,100% { background: var(--surface); } 50% { background: rgba(248,81,73,0.15); } }
+.siren { animation: siren 0.5s ease 3; }
+
+/* NEXT BTN */
+.next-wrap { text-align: right; margin-bottom: 16px; }
+
+/* MOBILE */
+@media(max-width:480px) {
+  body { font-size: 14px; }
+  .header { padding: 10px 12px; }
+  .logo { font-size: 14px; }
+  .welcome-wrap, .results-wrap { padding: 28px 16px; }
+  .action-btns { grid-template-columns: 1fr; }
+  .meta-grid { grid-template-columns: 1fr; }
+  .ticket-header { flex-direction: column; }
+  .ticket-title-lg { font-size: 19px; }
+  .log-block { font-size: 11px; word-break: break-word; overflow-wrap: anywhere; }
+  .section-body { padding: 12px; }
+  .timer-box { width: 100%; }
+  .btn-primary { padding: 13px 18px; }
+  .results-score-big { font-size: 54px; letter-spacing: -2px; }
+}
+</style>
+</head>
+<body class="">
+
+<!-- HEADER -->
+<div class="header" id="main-header" style="display:none">
+  <div class="logo">Be<span>Safe</span> <span style="color:var(--text2);font-weight:400;font-size:13px">/ SOC N1</span></div>
+  <div class="header-controls">
+    <button class="btn-icon" id="btn-mute" title="Mute/Unmute">🔔</button>
+    <button class="btn-icon" id="btn-theme" title="Tema">🌙</button>
+    <span id="hdr-score" style="font-size:13px;font-weight:700;font-family:var(--mono)">0/0</span>
+  </div>
+</div>
+
+<!-- WELCOME SCREEN -->
+<div class="screen active" id="screen-welcome">
+  <div class="welcome-wrap">
+    <div class="badge">Consultoria Be Safe</div>
+    <h1 class="welcome-title">N1 SOC: <em>Fecha ou Escala?</em></h1>
+    <p class="welcome-sub">
+      Bem-vindo à simulação mais próxima do inferno que você vai encontrar sem assinar NDA. 
+      27 chamados, cada um projetado para testar se você analisa evidências ou só adivinha.<br><br>
+      <strong>Instrutora:</strong> Mariana BS &nbsp;·&nbsp; <strong>Carga horária:</strong> 2h &nbsp;·&nbsp; <strong>Nível:</strong> Difícil
+    </p>
+    <div class="info-grid">
+      <div class="info-card"><div class="label">Chamados</div><div class="value">27</div></div>
+      <div class="info-card"><div class="label">Aprovação</div><div class="value">≥ 90%</div></div>
+      <div class="info-card"><div class="label">Pontos máx.</div><div class="value">27</div></div>
+
+    </div>
+    <div class="rules-box">
+      <h3>Como funciona</h3>
+      <ul>
+        <li>Cada chamado exige análise de evidências — não chute.</li>
+        <li>+1 ponto por decisão correta, −1 por decisão errada grave.</li>
+        <li>Encerrar incidente real ou escalar ruído óbvio penaliza.</li>
+        <li>Certificado liberado com ≥ 90% (≥ 25/27 decisões corretas).</li>
+        <li>O gabarito aparece só depois da sua resposta. Spoilers são crime.</li>
+      </ul>
+    </div>
+    <input class="name-input" id="player-name" type="text" placeholder="Seu nome completo (vai no certificado)" maxlength="60">
+    <button class="btn-primary" id="btn-start">Iniciar Simulação</button>
+  </div>
+</div>
+
+<!-- GAME SCREEN -->
+<div class="screen" id="screen-game">
+  <div class="game-layout">
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-title">
+        <span>Fila de chamados</span>
+        <span id="sb-count">0/27</span>
+      </div>
+      <div id="ticket-list"></div>
+    </div>
+    <div id="main-panel-wrap">
+      <div class="main-panel" id="main-panel">
+        <div class="empty-state">
+          <span class="big">📋</span>
+          <p>Selecione um chamado na fila ao lado. Bom trabalho — ou pelo menos tente.</p>
+        </div>
+      </div>
+      <div class="score-bar">
+        <div class="score-item"><div class="score-label">Pontos</div><div class="score-val" id="sb-points">0</div></div>
+        <div class="score-item"><div class="score-label">Resolvidos</div><div class="score-val" id="sb-done">0/27</div></div>
+        <div class="progress-wrap"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+        <div class="score-item"><div class="score-label">Precisão</div><div class="score-val" id="sb-acc">—</div></div>
+        <button class="btn-icon" id="btn-finish" style="display:none">Ver Resultado</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS SCREEN -->
+<div class="screen" id="screen-results">
+  <div class="results-wrap">
+    <div class="badge">Resultado Final</div>
+    <div class="results-score-big" id="res-score-big">0</div>
+    <div class="results-subtitle" id="res-subtitle"></div>
+    <div class="results-breakdown" id="res-breakdown"></div>
+    <div id="res-actions"></div>
+  </div>
+</div>
+
+<!-- CERT SCREEN -->
+<div class="screen" id="screen-cert">
+  <div class="cert-wrap">
+    <h2 style="margin-bottom:16px;font-size:20px;font-weight:800">Seu Certificado</h2>
+    <canvas id="cert-canvas"></canvas>
+    <div class="cert-actions">
+      <button class="btn-primary" style="width:auto;padding:12px 28px" id="btn-dl-cert">⬇ Baixar PNG</button>
+      <button class="btn-icon" style="padding:12px 20px" id="btn-back-res">← Voltar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── XOR CIPHER ──────────────────────────────────────────────────────────────
+const SALT = "BS-N1-SOC-2026::MarianaBS::v3";
+function xorEncode(str) {
+  const bytes = new TextEncoder().encode(str);
+  let out = "";
+  for (let i = 0; i < bytes.length; i++)
+    out += String.fromCharCode(bytes[i] ^ SALT.charCodeAt(i % SALT.length));
+  return btoa(out);
+}
+function xorDecode(b64) {
+  const raw = atob(b64);
+  const bytes = new Uint8Array(raw.length);
+  for (let i = 0; i < raw.length; i++)
+    bytes[i] = raw.charCodeAt(i) ^ SALT.charCodeAt(i % SALT.length);
+  return new TextDecoder().decode(bytes);
+}
+
+// ─── TICKETS ─────────────────────────────────────────────────────────────────
+// answer codes: "close" | "scale_n2" | "scale_critical" | "more_evidence" | "reclassify"
+// score: +1 correct, -1 wrong (grave), 0 wrong (partial)
+// wrongPenalty: true = -1, false = 0
+
+// Os gabaritos/comentários abaixo estão armazenados já ofuscados; xorEncode fica apenas para auditoria local.
+
+const RAW_TICKETS = [
+{
+  id:"INC-0041", title:"Brute force VPN + login bem-sucedido",
+  category:"Incidente de Segurança", prio:"Alta", impact:"Alto", urgency:"Alta",
+  sla:"01:45", user:"carlos.ribeiro", asset:"VPN-GW-01", source:"SIEM / Fortinet",
+  context:"Usuário do departamento financeiro. Nenhum ticket de viagem aberto. IP de origem: Rússia, depois Holanda, depois Brasil (5min de diferença). Login com MFA aprovado após 47 tentativas falhas.",
+  timeline:[
+    {t:"09:12",c:"warn",txt:"47 tentativas falhas de login na VPN (IPs variados, 3 países)"},
+    {t:"09:17",c:"err",txt:"Login bem-sucedido com MFA aprovado — IP: 185.220.101.42 (RU)"},
+    {t:"09:18",c:"err",txt:"Sessão VPN ativa: 40min de transferência de dados (1,2 GB)"},
+    {t:"09:19",c:"info",txt:"Alerta SIEM: impossible travel detectado"},
+  ],
+  logs:`[09:12:03] auth FAILED user=carlos.ribeiro src=185.220.101.42 attempts=47
+[09:17:44] auth SUCCESS user=carlos.ribeiro src=185.220.101.42 mfa=approved
+[09:17:45] vpn SESSION_START user=carlos.ribeiro assigned_ip=10.8.0.77
+[09:18:01] netflow bytes_out=1258291200 dst=185.220.101.42 duration=2400s`,
+  actions:[
+    {label:"Escalar incidente crítico", code:"scale_critical"},
+    {label:"Encerrar — MFA aprovado é suficiente", code:"close"},
+    {label:"Escalar para N2", code:"scale_n2"},
+    {label:"Solicitar mais evidências", code:"more_evidence"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBDUVdWXxICAAAVBwIjPxgWVEAhPF8rbk48PTFIUUQQDAsWbxIRBhMLPjUhVVQREXh+HGITWiEgLUpiVVxXVk40Q0gdExsEbnFcXxNXIDJOJW5OPD0xSFFEEAwYeSITAAwVAU9iGldKGUAxOk8iVA0nPSJbV1wSHRoOekEUCA0GADFzERpHH3BzagwRSTZvMEzxnVZXGgdtAgAMBQsPITpbVlZQLT5dPF5ANjsqSVMcEkZIVTsABAwNAwQsJ18aO3UDc0svRUQ0OiYNXUUSZXN3bRIFCBFAQQcgWVsaXCwyQCtfWTxvIF/xnUZfWVVtottJDA8PJjJO+cVBKzwDbB0PNSomSVBRUV1lTT8OHA5DVEMHIUhVAx1iHmsPEUwjPSxbU1RdFltKjtIBSVVZQTY2VE4XRyslTD0RSD5vcA1CUfGbSV8+QREGDE5QbmEafTQTJjYNK0lLOiM3X1PzlfWZVW2i20kUA0ErPVlTElYsJ0huUFk6OSwBEl7xlVUaOAxSDBcLDzY8GltWQCchDT9ESCA7KkJcUVZZFBhhQxQMBAoDIzBRZQZSMCdEL10PaW1hARBEQF9ZUW9bUCZBIycDc1tKBFw0MkkhEV0yPSZOVxBGRFtUPBQbBQgUACwnXxRWfYHwQm7yhH1vDmtzEFRXTlMqFBdJDhtBNjxRXxgTMDxYLFBJPG8mVUJcW1VbV20AUggRHA40MvmdtZAtfQ9iE0QnJi8PCBJ7W0pbLhUdSQACFS1zERoDQSWQhyBSRDJvIkFGURILGmo/CB0bCAoAJjYaC1YbASHu40VEMC5qDUFVVUNUXiJBHwgVHAg4c3NuP39scVA="
+},
+{
+  id:"INC-0042", title:"EDR bloqueou execução de malware (x12 endpoints)",
+  category:"Evento de Segurança", prio:"Média", impact:"Médio", urgency:"Média",
+  sla:"03:00", user:"múltiplos", asset:"WS-CORP-múltiplos", source:"CrowdStrike",
+  context:"12 workstations da mesma subnet bloquearam o arquivo 'update_windows.exe' pelo EDR. Hash: d41d8cd98f00b204e9800998ecf8427e. Nenhuma execução confirmada. Arquivo chegou por e-mail com link de phishing bloqueado pelo gateway.",
+  timeline:[
+    {t:"10:05",c:"warn",txt:"Gateway bloqueou e-mail phishing com link para update_windows.exe"},
+    {t:"10:07",c:"warn",txt:"3 usuários clicaram no link mesmo assim (via cache do navegador)"},
+    {t:"10:08",c:"ok",txt:"EDR bloqueou download/execução em todos os 12 endpoints"},
+    {t:"10:10",c:"info",txt:"Hash verificado: MD5 nulo (d41d8cd9...) — arquivo vazio"},
+  ],
+  logs:`[10:05:11] mailgw BLOCK subject="Atualização urgente Windows" hash_url=a9b3c1
+[10:08:02] edr PREVENT file=update_windows.exe hash=d41d8cd98f00b204e9800998ecf8427e action=BLOCKED
+[10:08:03] edr PREVENT x12 hosts same_hash no_execution_confirmed
+[10:10:01] ti_lookup hash=d41d8cd98f00b204e9800998ecf8427e result=EMPTY_FILE`,
+  actions:[
+    {label:"Escalar incidente crítico", code:"scale_critical"},
+    {label:"Escalar para N2 — phishing ativo", code:"scale_n2"},
+    {label:"Encerrar — bloqueado, sem execução", code:"close"},
+    {label:"Solicitar mais evidências", code:"more_evidence"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBTXllJX29NUBoCARMnDFlVBEEnMFlsCxx/bTBOXUJXaU1IIg8VS1teTWAkSFUYVBI2Qy9dWSpteUtTXEFTFhgrBBcNAw8CKQxZVQRBJzBZbAsPECAxX1dEXRgadywNBQgTC0EgP1VLA1YjN0JuQkg+byZVV1NH9Z357g5SCg4AByshV1sSUm5zRS9CRXMhNkFdEBpXSEs4CAQGQRgAODpVE1oTJTJZK0ZMKm8mDXd0YBZcTyMCGwYPDw8mPBpZGV4tc0g9QUghLidCHBB2WVlPIAQcHQRCQSw8TlMQWjMmSG5EXiaM4l9bX0EWSVUvExdJEQYIMTtTVBETJ3NIIFJIIT0mAxJiR/WXXiJBEQYPGhMtP1teGR1gfw8oVEg3LSJOWW9FRFVUKkNISy5OJAYBGlwTSWIgSDsRWSEuIUxeWF0YGnIsEhpJLCpUYj1PVhkTKz1JJ1JMcy4xXEdZRFkaTCwbGwZBjOHWc1RfGxMvMkE5UF82bzFIU1wSU0hbY0E3GgIPDSMhGlMFQC1z7ucRSTY8M0hAVFv1nVs/QTxbQQ0OL3NcWxpALXNMIlBfPiptDx4SVFNfXi8AEQI+HgAwJ1NbGhF4cQ9iE1khJiBGEAoQBwgaKA8WGQ4HDzYgGkoXQScwSCMRTD8uMUBXHhJ7W0ltAx4GEBsEKzwaXxsTLzJePVANIyovQhJ1dmQaSSgMUgwZCwI3kJ351VxikIRuVFUyOyJAV15GUxpVbRAHDEEBQQcXaBoSVjQ2DShQVzY9bQ8eEltCU1ZvW1AsFwsPNjwa2PChYhJBK0NZMm+hq6AQcFpVSzgEGwZBHQQvc1NXBlIhJ0JuDA09jOBCEvObFlNULggWDA8aBGIabnM6HWIVSC1ZTHMsLEASXl1CWxopBFIIFg8TJz1fSQUdYC4="
+},
+{
+  id:"INC-0043", title:"PowerShell suspeito — admin em janela aprovada",
+  category:"Mudança / Evento", prio:"Baixa", impact:"Baixo", urgency:"Baixa",
+  sla:"06:00", user:"svc.deploy", asset:"SRV-APP-07", source:"Sysmon / SIEM",
+  context:"Script PowerShell executou commandlets de reconhecimento (Get-ADUser, Invoke-Command) em SRV-APP-07. Conta: svc.deploy. Horário: 02:14. Change request CR-2024-0891 aprovado para janela 02:00–04:00. Script documentado no CR.",
+  timeline:[
+    {t:"02:00",c:"ok",txt:"Janela de mudança CR-2024-0891 iniciada (aprovada pelo CAB)"},
+    {t:"02:14",c:"warn",txt:"SIEM alerta: PowerShell com Invoke-Command e Get-ADUser"},
+    {t:"02:16",c:"info",txt:"Verificado: svc.deploy é conta de serviço do pipeline CI/CD"},
+    {t:"02:18",c:"ok",txt:"Script idêntico ao anexado no CR-2024-0891"},
+  ],
+  logs:`[02:14:07] sysmon EventID=4104 user=svc.deploy cmd="Get-ADUser -Filter * | Invoke-Command"
+[02:14:07] siem ALERT rule="Suspicious PowerShell Recon" severity=HIGH
+[02:16:00] change_mgmt CR-2024-0891 status=IN_PROGRESS window=02:00-04:00 approved=YES
+[02:16:01] change_mgmt script_hash_match=TRUE`,
+  actions:[
+    {label:"Escalar para N2 — PowerShell suspeito", code:"scale_n2"},
+    {label:"Encerrar — mudança aprovada", code:"close"},
+    {label:"Reclassificar prioridade", code:"reclassify"},
+    {label:"Solicitar mais evidências", code:"more_evidence"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBTXllJX29NUBoCARMnDFlVBEEnMFlsCxx/bTBOXUJXaU1IIg8VS1tDUG5xTUgZXSUDSCBQQSc2YRdGQkdTFhgrBBcNAw8CKQxZVQRBJzBZbAsPECAxX1dEXRgaeR9BExkTARcjN1UaBlYuPA0NcG9/bylMXFVeVxpbOQgECE1OEiEhU0oCEyY8TjtcSD07IkldEFcWUls+CVIKDgAHKyFXWxJcbHNibmJkFgJjSEFE8ZcaXCwbFwcFAUEtc05IF1EjP0UhEUk2IyYNGlFeU0hOLBNbRUEDADFzVRoVXCwnSDZFQnM5IkFbVFMWWxosFRsfCAoAJjYUGjdHKyVEKlBJNm8iSV9ZXF9JTj8ABgAXD0EuNl3520crPkxgEwFxKSZIVlJTVVFlOhMdBwZMW2AWSVkXXyMhDSdCXjxvgIQSWl1RW0htDlInU04CLT1OSBcTLXNZJ1xIcysmDVteVERbGj4EH0kMARUrJVUUVnxiAGQLfA0yIyZfRl9HFkpVP0EADAYcAGI0X1S1mjA6Ti8Rz9PbY15XRRJCSFsvAB4BDk6i63NZVQRBJz9MLVhCPS4xDVFfXxZbGiAUFggPrcYjc1tKBFw0MkkvHw9/bSVIV1RQV1lREhETGxUHAC5xABhUH2AnXydSRnF1YX1dR1dEaVIoDR5JBQtBMDZZVRhbJzBEI1RDJyBjSVcQX1deSDgGEw0AThEjIV9ZExMxJl4+VEQnIG0Nf1FBFlsaJwAcDA0PQSY2GlcDVyM97ulQDTI/MUJEUVZXGl9tDlIBAB0JYjdVGgVQMDpdOhFekOwsDUJCXUBbSW0SBw8IDQgnPU5fBR1gfw8nRUQ/bXkPf0VWV1T56gBSDQQAFTA8Gl4XEygyQytdTHNyY39XQUdfSVOOxrHKDkEsNzdbVLWUI30NAPKOPG+AhBJZXFVTXigPBgxPTBw="
+},
+{
+  id:"INC-0044", title:"Login impossível com MFA aprovado — CFO",
+  category:"Incidente de Segurança", prio:"Alta", impact:"Alto", urgency:"Alta",
+  sla:"01:30", user:"ana.souza (CFO)", asset:"M365 / Exchange Online", source:"Azure AD / SIEM",
+  context:"CFO logou no M365 de São Paulo às 08:45. Às 08:52, login bem-sucedido de Lagos, Nigéria, mesmo usuário, MFA aprovado. Tempo de voo SP→Lagos: ~10h. Sem tickets de viagem. CFO está no escritório conforme câmera.",
+  timeline:[
+    {t:"08:45",c:"ok",txt:"Login legítimo: ana.souza — SP, Brasil (IP corporativo)"},
+    {t:"08:52",c:"err",txt:"Login bem-sucedido: ana.souza — Lagos, Nigéria (IP residencial NG)"},
+    {t:"08:53",c:"err",txt:"Azure AD: Impossible Travel detectado — risk score: 95/100"},
+    {t:"08:54",c:"info",txt:"Câmera de acesso: CFO no elevador, andar 12, 08:54"},
+  ],
+  logs:`[08:45:02] aad LOGIN success user=ana.souza ip=200.152.x.x loc=BR risk=0
+[08:52:11] aad LOGIN success user=ana.souza ip=197.210.x.x loc=NG risk=95 mfa=approved
+[08:52:12] aad ALERT impossible_travel time_delta=7min distance_km=9200
+[08:53:00] siem CRITICAL rule="Impossible Travel - VIP User" user=ana.souza`,
+  actions:[
+    {label:"Solicitar mais evidências antes de agir", code:"more_evidence"},
+    {label:"Escalar para N2", code:"scale_n2"},
+    {label:"Encerrar — MFA aprovado valida o login", code:"close"},
+    {label:"Escalar incidente crítico — VIP comprometido", code:"scale_critical"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBDUVdWXxICAAAVBwIjPxgWVEAhPF8rbk48PTFIUUQQDAsWbxIRBhMLPjUhVVQREXh+HGITWiEgLUpiVVxXVk40Q0gdExsEbnFcXxNXIDJOJW5OPD0xSFFEEAwYeSITAAwVAU9iEHx1VlUrIEQtUEA2ITdIEl5dFl9JLhMbHaLdEys8GhFWXy00RCARSTJvDURV85tEU1ttVlIECAAUNjxJGhJWMjxEPREQcywxSFZVXFVTWyFBEQYMHhMtPl9OH1cjfQ0YeH1zZGNJU1RdFlxTIwAcCgQHEy1zERo7dQNzTD5DQiUuJ0ISQ0dFSl8kFR1JXE4ILDBTXhNdNjYNLUPu/jsqTl0QW1tfXiQABgZPTjI3IEpfGFcnIQ09VF4gjOBCEn51Fl8aLAIbBg8PE2IdCBU4AGxxAWxXSDYrIUxRW21BSFUjBlBTQyMnA3NbSgRcNDJJIRFOPCJjRF9AXUVJUy8NF0kVHAA0NlYaElZiagN8AR1zJC4NV10SARpXJA8HHQ4dQSyQmVVW8OtzSytQWSY9JgES85sWWUgoBRcHAgcALnNIVQNRIzdMYBFukO0uSEBRElVVVCsIAAQATg5iEHx1Vl0tc1088oQ3JiwDEnlBRVUajshSOVBAQ25xXF8TVyAyTiVuXTI9N0RTXBAMGBhhQwYbCA0KYGkYdVYUDxVsblBdISA1TFZfFRZe+exBAQwPHQCB9PmZGRMmNg09VEomPSJD8ZdTGBp3LBJSAAweDjEgU1gaVmInXy9HSD9vIEJfEFH1mFcoExNJAgEPNiFbXh9JJz1JIRHu+m8zX11GUxZc+eASGwoAQENucVNOH19gaQ8YeH1zZGNEX0BTVU5VbQUXSQ8LBoHgWVMZEzI8WStfTjouLw0ac3R5GlkiDFIIAgsSMTwaXB9dIz1OK1hfPGZjEBJgAxZ5SI7MBgACAU9gLg=="
+},
+{
+  id:"INC-0045", title:"Phishing reportado — remetente é simulação interna",
+  category:"Requisição / Awareness", prio:"Baixa", impact:"Baixo", urgency:"Baixa",
+  sla:"08:00", user:"pedro.lima", asset:"Workstation / E-mail", source:"Usuário / Cofense",
+  context:"Usuário reportou e-mail de phishing via botão do Cofense. Remetente: phishsim@besafe-awareness.com. Assunto: 'Seu benefício expira hoje'. Header X-PhishSim: true. Campanha #AWR-2024-09 ativa segundo calendário de awareness.",
+  timeline:[
+    {t:"11:20",c:"info",txt:"pedro.lima reportou e-mail suspeito via Cofense Reporter"},
+    {t:"11:21",c:"ok",txt:"Domínio remetente: besafe-awareness.com (interno, whitelisted)"},
+    {t:"11:21",c:"ok",txt:"Header X-PhishSim: true presente no e-mail"},
+    {t:"11:22",c:"ok",txt:"Campanha AWR-2024-09 ativa: semana de conscientização"},
+  ],
+  logs:`[11:20:14] cofense REPORTED user=pedro.lima subject="Seu benefício expira hoje"
+[11:20:14] mailgw header X-PhishSim=true sender=phishsim@besafe-awareness.com
+[11:21:00] dns_lookup besafe-awareness.com → INTERNAL WHITELISTED DOMAIN
+[11:21:30] awareness_mgmt campaign=AWR-2024-09 status=ACTIVE target=ALL_USERS`,
+  actions:[
+    {label:"Escalar incidente crítico", code:"scale_critical"},
+    {label:"Escalar para N2 — phishing ativo", code:"scale_n2"},
+    {label:"Encerrar — simulação interna identificada", code:"close"},
+    {label:"Solicitar mais evidências", code:"more_evidence"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBTXllJX29NUBoCARMnDFlVBEEnMFlsCxx/bTBOXUJXaU1IIg8VS1tDUG5xTUgZXSUDSCBQQSc2YRdGQkdTFhgrBBcNAw8CKQxZVQRBJzBZbAsPECAxX1dEXRgafiIMscQPBw5iOlROE0EsPA05WUQnKi9EQURXUhoRbQkXCAULE2I3XxoFWi8mQS/yipDsLA0ZEFFXV0osDxoIQQ8VKyVbGksTMjtEPVlEPShjXltdR1pbXiJPUiwPDQQwIVsWVkEnNEQ9RV8ybzNMQERbVVNKLKLVqsIBQSY8Gk8FRoHyXydeDTZvM0xAUVBTVFM3AFIZBAIOYiFfShlBNjYNZkLu+j0qQh4QW0VJVW2i20kTDxMtehQYWhEkNkgqU0wwJBxaQF9cURgAbyQBCgACADBzSVMbRi4y7unyjjxvKkNGVUBYWxokBRcHFQcHKzBbXhcTgfoNKVBeJy4xDUBVUUNISSJBFgxBIFNiMFVXVlUjP14hEV08PCpZW0ZdFvmJLxcbBk9OLmI7X1sSVjBzdWNhRTo8K35bXRJTQlM+FRdJBBYANjJXXxhHJ3NdL0NMcyowXlcQVF9XFG9NUA8ECwUgMllRKUMjIVknUEFxdWEPHhJGRFNZJkNISyBOCDEwWxq1mmI8DS9CXiYhN0ISRUBRX1Q5BFJBRgwELDZc+dtQKzwNK0ldOj0iChseEndUWyEIAR0ATgAsIFNVBVxiNl4tUEEybzBIXxBEU0hTKwgRCBNOEyc+X04TXTY2DSsRRTYuJ0hAQxwUFhgkFRsFQ1RDDJCZVVbw63NEIFJENyotWVceEvWzGigXFwcVAUEmNhpbAVIwNkMrQl59bwdCUUVfU1ROLBNSGQAcFSswU0oX8OWQjiEfDy4="
+},
+{
+  id:"INC-0046", title:"Phishing real — link recém-criado, usuário clicou",
+  category:"Incidente de Segurança", prio:"Alta", impact:"Alto", urgency:"Alta",
+  sla:"01:30", user:"julio.ferreira", asset:"WS-CORP-042", source:"Proxy / Cofense",
+  context:"Usuário clicou em link de e-mail. Domínio destino: secure-m1cr0s0ft-login[.]com (criado há 6h). Proxy registrou GET + POST com dados de formulário. EDR detectou processo explorer.exe tentando download de stager. Sem bloqueio confirmado do stager.",
+  timeline:[
+    {t:"14:02",c:"err",txt:"Usuário acessou secure-m1cr0s0ft-login[.]com via Chrome"},
+    {t:"14:02",c:"err",txt:"POST /login com credenciais (proxy log)"},
+    {t:"14:03",c:"err",txt:"EDR: explorer.exe → wscript.exe — download de stager não bloqueado"},
+    {t:"14:04",c:"warn",txt:"AV detectou mas não bloqueou: Win32/Downloader.Agent (confiança baixa)"},
+  ],
+  logs:`[14:02:31] proxy GET secure-m1cr0s0ft-login[.]com user=julio.ferreira status=200
+[14:02:33] proxy POST secure-m1cr0s0ft-login[.]com data_len=312 (form_data)
+[14:03:01] edr DETECT explorer.exe→wscript.exe download_url=http://94.102.x.x/s.ps1
+[14:03:02] edr ALERT no_block confidence=LOW action=ALERT_ONLY
+[14:03:05] av DETECT Win32/Downloader.Agent action=ALERT_ONLY`,
+  actions:[
+    {label:"Escalar incidente crítico — endpoint comprometido", code:"scale_critical"},
+    {label:"Encerrar — AV detectou", code:"close"},
+    {label:"Solicitar evidências adicionais", code:"more_evidence"},
+    {label:"Escalar para N2", code:"scale_n2"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBDUVdWXxICAAAVBwIjPxgWVEAhPF8rbk48PTFIUUQQDAsWbxIRBhMLPjUhVVQREXh+HGITWiEgLUpiVVxXVk40Q0gdExsEbnFcXxNXIDJOJW5OPD0xSFFEEAwYeSITAAwVAU9iEFZTB0Ync04hX0s6PS5MVl8SHRpqAjImSQIBDGIwSF8SViwwRC9YXnNkY15GUVVTSBojotEGQQwNLSJPXxdXLXMGbnRpAW8mQBJdXVJVGiwNFxsVD0F/c19UEkMtOkM6EUwnJjVCElVfFllVIBEABgwLFSs+X1QCXGxzbjxUSTYhIERTXBJGSFU7AAQMDQMELCdfGhVcLjZZL1VMfW8KXl1cU0QaUiISBkkETgQxMFtWF0FiAxxgEwFxKSZIVlJTVVFlOhMdBwZMW2ASbBoSVjY2TjpeWHMiIl4SXvGVVRovDR0YFAsON30aaQJSJTZfbldCOm8hTFtIU1JVFG0iAAwFCw8hOltTBRMkPF8vXA0jIDBZU1RTRRQaBBIBBkEAouE8GvnfE2U3SDpUTicgNg1XEEBTSVUhFxccRk6Dwsca+d8TZTdIOlROJyA2DVcQVlNTQiIUUggCAQ82NllfBBRscQFsV0g2KyFMUVttRltIOQgTBUNUQ2B/GE4EWiE4D3QTChIZY0lXRFdVTlU4RlIaDg9BITxXVVYUAwUNPFRePCM1SEcXHBZ0+e4OXEkgDRUrPFQHN38HAXkRfmMfFmNeW1dcX1xTLgBSGBQLQS1zV1saRCMhSG5BQjcqY1lXQhJEVV4sBR1HQ0JDKydTVlQJYBBfK1VIPSwqTF4QUVlXSj8OHwwVBwUjcxEaE0snMFiNlu7wIGNeR0NCU1NOLEFPSSgAAis3X1QCVmIDHG5VSHMcJkpHQlNY+Z0sT1AU"
+},
+{
+  id:"INC-0047", title:"Scanner de vulnerabilidade confundido com ataque",
+  category:"Evento Esperado", prio:"Baixa", impact:"Baixo", urgency:"Baixa",
+  sla:"06:00", user:"svc.nessus", asset:"Rede corporativa", source:"IDS / Snort",
+  context:"IDS alertou para varredura massiva na rede (SYN scan, 65k portas). IP de origem: 10.10.50.100. Identificação: svc.nessus (conta de serviço do Nessus). Scan programado às 15:00 toda terça-feira — documento de política PS-SEC-012.",
+  timeline:[
+    {t:"15:00",c:"warn",txt:"IDS: SYN scan massivo detectado — 65k portas, toda a rede /16"},
+    {t:"15:00",c:"info",txt:"IP origem: 10.10.50.100 (Nessus scanner, inventário de ativos)"},
+    {t:"15:01",c:"ok",txt:"Política PS-SEC-012: scan autorizado toda terça, 15:00–17:00"},
+    {t:"15:02",c:"ok",txt:"Conta svc.nessus ativa e autorizada — sem desvio de comportamento"},
+  ],
+  logs:`[15:00:00] snort ALERT SYN_SCAN src=10.10.50.100 dst=10.0.0.0/16 ports=1-65535
+[15:00:00] snort rule=ET_SCAN_NMAP_SYN priority=HIGH
+[15:00:01] inventory svc.nessus=authorized scanner_host=10.10.50.100
+[15:00:02] policy PS-SEC-012 scan_schedule=TUE_15:00 authorized=TRUE`,
+  actions:[
+    {label:"Reclassificar prioridade para Crítica", code:"reclassify"},
+    {label:"Solicitar mais evidências", code:"more_evidence"},
+    {label:"Escalar para N2 — varredura massiva", code:"scale_n2"},
+    {label:"Encerrar — scanner autorizado", code:"close"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBTXllJX29NUBoCARMnDFlVBEEnMFlsCxx/bTBOXUJXaU1IIg8VS1tDUG5xTUgZXSUDSCBQQSc2YRdGQkdTFhgrBBcNAw8CKQxZVQRBJzBZbAsPECAxX1dEXRgaaS4AHAcEHEEMNklJA0BiMlg6Xl86NSJJXRwSf2oaLg4cAQQNCCY8FhoeXDCQjDxYQnM/MUJVQlNbW14iTVIZDgKi7ydTWRcTJjxOO1xIPTsiSVMeEmRP+eAFHUkOHgQwMllTGV0jPw0tXe7yPDBEUV8cFmlfbRcdCqLEQScgWVsaUjBzRD1CQn9vNUxbEFdOSlYkAhMbQR4TLXN0CFZCNzYNOlRfkOgiXh9WV19IWz5BFxEIHRUnPhQYWhEkNkgqU0wwJBxaQF9cURgAbzIRCA8ABDBzXl9WRTc/Q25QWCcgMURIUVZZGlkiDFIgMU4EYjtVSLWSMDpCblVCMDouSFxEU1JVSW2i20kNBxUnIVtWG1YsJ0huXg0iOiYNFUdaX05fIQgBHUZOEis0VFMQWiEyA250XjAuL0xAEFtFSVVtottJFwcTIyEaSh9SJjINIF4NMC4tTF4QVlMaSSgGBxsAAKLlMhQYWhEkNkgqU0wwJBxdU0JGX1tWb1tQS01MFTA6WVFUCWBlGCURXTw9N0xBEBkWaWMDQQEKAABBMjJIXxVWYjJZL0BYNm8kX1NGVxgadW0oNjpBAKLhPBpJF1Enc0knQlk6ISRYW0IS1LqubQwTGkEYDiGQkBoSVjQ2XydQA3FjYURGWV4UABgMFRsfCAoAJjYaShpSLDZHL1VMcypjSV1TR1tfVDkAFghBU0EskJlVVvDrc0QgUkQ3Ki1ZVx4QSw=="
+},
+{
+  id:"INC-0048", title:"DLP: planilha com dados pessoais para Gmail",
+  category:"Incidente de Segurança / DLP", prio:"Alta", impact:"Alto", urgency:"Média",
+  sla:"02:30", user:"marcia.santos", asset:"Endpoint / DLP Symantec", source:"DLP / Proxy",
+  context:"DLP bloqueou envio de planilha 'colaboradores_salarios_2024.xlsx' para marcia.santos@gmail.com. Arquivo contém 847 linhas com CPF, salário e dados bancários. Marcia é analista de RH. Não há autorização de transferência de dados. LGPD aplicável.",
+  timeline:[
+    {t:"16:30",c:"err",txt:"DLP bloqueou: colaboradores_salarios_2024.xlsx → marcia.santos@gmail.com"},
+    {t:"16:30",c:"err",txt:"Conteúdo: 847 registros com CPF, salário, dados bancários"},
+    {t:"16:31",c:"warn",txt:"Sem justificativa de negócio registrada para a transferência"},
+    {t:"16:32",c:"info",txt:"marcia.santos não possui autorização de DLP para dados sensíveis"},
+  ],
+  logs:`[16:30:22] dlp BLOCK file=colaboradores_salarios_2024.xlsx dst=marcia.santos@gmail.com
+[16:30:22] dlp policy=PII_SENSITIVE records=847 fields=CPF,SALARY,BANK_ACCOUNT
+[16:30:23] dlp user=marcia.santos dept=HR authorization=NONE
+[16:31:00] proxy OUTBOUND_BLOCK gmail.com attachment_blocked=TRUE`,
+  actions:[
+    {label:"Escalar incidente crítico", code:"scale_critical"},
+    {label:"Escalar para N2 — vazamento potencial de dados", code:"scale_n2"},
+    {label:"Encerrar — DLP bloqueou, sem exposição", code:"close"},
+    {label:"Solicitar mais evidências", code:"more_evidence"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBDUVdWXxIPQEtNTBIhPEhfKVAtIV8rUllxdXIBEENRWUhfEhYABg8JQ3hjFhgBQS09Sh5UQzIjN1QQClRXVkkoTVAPBAsFIDJZUSlQLSFfK1JZcXVhbl1CQFNOVWNBMAUOHxQnMl5VVl2B8EJuQkQ0ISpLW1NTFlNUIgIXBxULT2IHX1QCUjY6Wy8RSTZvJlVUWV5CSFuOxrHKDk4FJ3NeWxJcMXNeK19ekOI1SFtDElJfGnVVRUkCAQ0jMVVIF1ctIUg9EQUQHwUNGRBQV1RZIkhSGQ4cQSd+V1sfX2IjSD1CQjIjY15XXRJXT04iExsTAK3GgfBVGrWaYhdhHhFEPSwqSVdeRhZLTyhBAAwQGwQwc1NUAFYxJ0QpUO70jOBCElRXFmhyYUE4HBOtzCY6WVVWVmIDXydHTDAmJ0xWVRwWdAhtERMbAE4ALJCbVh9AJ3NJKxFEPTsmQ/GX8ZVVFG9NUA8ECwUgMllRKUQwPEMpExdxCw99ElJeWUtPKA4HSQBOBDo1U1YCQSOQio2SQn9vLkxBEFMWTl8jFRMdCBgAYiNIXxVaMTINKlQNOiE1SEFEW1Fb+eqi0QZPTjEtN18aBVYwc0g8Q0J/bzNCVlUSRV9IbQQKDwgCFTAy+Z21kC1zSStdRDEqMUxWURwWdn0dJVIMGQcGJ3NIXxFaMSdfIRFIcy4t7pNcW0VfFG0vscoOTgcnMFJbWBFucUsrVEkxLiBGbUBTRE5TLA1QU0NMTWAnSFMVWGBpD2l1YQNvIUFdQUdTVU9qQQIIEwsCJ3NIXwVcLiVIPB8NHi4wDUZVXEJbTiQXE0kFC0EnPUxTF0Fiaxl5EW4DCTANQlFAVxpfYAwTAA1OEScgSVUXX2IgSCMRTCY7LF9bSlP1nfnuDlKqyE4ENDZUThkTMyZIbl4NGTox7p9UW1VVGihBICFBHhMnMFNJF15iIEwsVF99bW8PW0RbWhgAbygfGQANFS1zXl9WfwUDaW4MDTY8IExeUUAWSls/AFKqwBwEI3NZVRtDJydIIEVIfW8NHxIfEmZIUzsAEQAFDwUnc15fVncjN0I9Hw8u"
+},
+{
+  id:"INC-0049", title:"Firewall bloqueando tráfego — sem impacto relatado",
+  category:"Evento / Ruído", prio:"Baixa", impact:"Baixo", urgency:"Baixa",
+  sla:"08:00", user:"N/A", asset:"FW-CORE-01", source:"Firewall Palo Alto",
+  context:"Firewall logou 2.847 bloqueios na última hora de IPs de saída da rede interna para portas 4444, 31337, 1337. Análise de IPs: todos pertencem a CDN cloudflare e AWS sem reputação negativa. Nenhum usuário reportou problema. Regra de bloqueio: política padrão drop-all-outbound-non-standard.",
+  timeline:[
+    {t:"17:00",c:"warn",txt:"2.847 bloqueios em 1h: portas 4444/31337/1337 saindo da rede"},
+    {t:"17:01",c:"ok",txt:"IPs destino: Cloudflare/AWS — sem IOC em threat intel"},
+    {t:"17:02",c:"ok",txt:"Nenhum usuário reportou impacto ou indisponibilidade"},
+    {t:"17:03",c:"ok",txt:"Regra aplicada: drop-all-outbound-non-standard (política padrão)"},
+  ],
+  logs:`[17:00:01] fw DENY src=10.x.x.x dst=104.21.x.x port=4444 rule=DROP_NONSTANDARD
+[17:00:xx] fw DENY x2847 similar_blocks same_rule CDN_IPs
+[17:01:00] ti_lookup 104.21.x.x result=CLOUDFLARE_CDN reputation=CLEAN
+[17:02:00] helpdesk open_tickets=0 related_complaints=NONE`,
+  actions:[
+    {label:"Escalar para N2 — volume alto de bloqueios", code:"scale_n2"},
+    {label:"Solicitar mais evidências", code:"more_evidence"},
+    {label:"Encerrar — bloqueio esperado, sem impacto", code:"close"},
+    {label:"Escalar incidente crítico", code:"scale_critical"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBTXllJX29NUBoCARMnDFlVBEEnMFlsCxx/bTBOXUJXaU1IIg8VS1tDUG5xTUgZXSUDSCBQQSc2YRdGQkdTFhgrBBcNAw8CKQxZVQRBJzBZbAsPECAxX1dEXRgafCQTFx4AAg1iNVtAE10mPA0hEVwmKmNLXVkSVVVUKwgVHBMPBS1zSlsEUmI1TDRUX3NnIUFdQUdTW0htER0bFQ8SYj35mRkeMjJJPPKOPGZtDXtgQRZeX20FFxoVBw8tc1ZTG0MtIA0rXA0nJzFIU0QSX1ROKA1cSTILDGI6V0oXUDY8AW5CSD5vNl5H85NEU1VtExcKDQ8MIz1eVVgTECbu41VCcyAzSEBRUV9VVCwNUovh+kE0PFZPG1ZiMkE6Xg03KmNBXVdBFtiz7UEbBwIHBSc9Tl9YEW5xSytUSTEuIEZtR0BZVF1vW1BbT1ZVdXNYVhlCNzZEIUINIyovQhJWW0RfTSwNHkkHGw8hOlVUF10mPA0tXkM1IDFAVxBCWVb54BUbCgBOg8vzGlMYUCs3SCBFSH1vFUJeRV9TGl4oQR4GBk4PgfBVGrWaYjBfJ0Xu+j0qQhJUVxZJXzsEAAAFDwUnfRgWVFUnNkksUE44EDNMQERbV1YYd0NQRUMaEyswURhMEQ1zQ42LQDY9LA0AHgoCDRosEgEcEhoAbHN3WwUTNjxJIUINPDxjT15fQ0NfUyISUhqizQ5iN1saG1YxPkxuQ0g0PSINQlFWRPmZIk1SGgQDQQsceRZWQCc+DSdcXTIsN0IcEh4UU04kDVBTQysXJz1OVVZAJz4NJ1xdMiw3QhJVEkVfV20HEwUJD0EmNhpJE0E0Ou7pXg1uby3ukV8S9ZMaJA8RAAULDzY2GnMieg59DzM="
+},
+{
+  id:"INC-0050", title:"Servidor crítico: beaconing para domínio suspeito",
+  category:"Incidente de Segurança", prio:"Alta", impact:"Alto", urgency:"Alta",
+  sla:"01:00", user:"svc.database", asset:"SRV-DB-PROD-01", source:"NDR / Darktrace",
+  context:"Servidor de banco de dados de produção estabelecendo conexões HTTPS regulares a cada 4 minutos para domínio registrado há 3 dias: upd8-telemetry-cdn[.]com. DNS reverso não resolve. Processo gerador: sqlservr.exe → cmd.exe → powershell.exe (cadeia de spawn suspeita).",
+  timeline:[
+    {t:"03:11",c:"err",txt:"NDR: SRV-DB-PROD-01 → upd8-telemetry-cdn[.]com a cada ~4min"},
+    {t:"03:12",c:"err",txt:"Domínio: registrado 3 dias atrás, sem histórico, DGA suspeito"},
+    {t:"03:13",c:"err",txt:"Processo: sqlservr.exe → cmd.exe → powershell.exe (LOLBin)"},
+    {t:"03:15",c:"warn",txt:"Dados saindo: ~50KB por beacon (possível C2 channel)"},
+  ],
+  logs:`[03:11:00] ndr ALERT beacon_detected host=SRV-DB-PROD-01 dst=upd8-telemetry-cdn[.]com interval=240s
+[03:11:01] dns query upd8-telemetry-cdn[.]com → 91.108.x.x (non-CDN IP)
+[03:12:00] ti_lookup upd8-telemetry-cdn[.]com age=3d reputation=UNKNOWN dga_score=0.87
+[03:13:00] edr parent_proc=sqlservr.exe child=cmd.exe grandchild=powershell.exe`,
+  actions:[
+    {label:"Encerrar — pode ser telemetria legítima", code:"close"},
+    {label:"Escalar para N2", code:"scale_n2"},
+    {label:"Solicitar mais evidências antes de escalar", code:"more_evidence"},
+    {label:"Escalar incidente crítico — C2 ativo", code:"scale_critical"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBDUVdWXxICAAAVBwIjPxgWVEAhPF8rbk48PTFIUUQQDAsWbxIRBhMLPjUhVVQREXh+HGITWiEgLUpiVVxXVk40Q0gdExsEbnFcXxNXIDJOJW5OPD0xSFFEEAwYeSITAAwVAU9iEVtUFVxiN0huVUw3IDANVlUSRkhVKRSxzqLNDmIwVVdWUScyTiFfRD0oY0wSU1NSWxp5DBsHQR4AMDIaXhlegf5DJ14NISogSFxEVxYRGi4AFgwID0EmNhpKBFwhNl49Xg0fAA9vW14SHklLIRIXGxccg8TBWVcS0cTBXSFGSCE8K0heXBsWBxoOU1IIFQcXLX0aakcTKz5IKlhMJyBtDXtDXVpbSG0EUggCBw4sMkgaP2FscQFsV0g2KyFMUVttQUhVIwZQU0M9BDAlU14ZQWI3SG5BXzwrNu6V85FZGlwsGxcHBQFBIDZbWRldYiNMPFANNyAu7p9eW1kaXihBQUkFBwAxc1lVGxMxI0w5Xw0gOjBdV1lGWRpUjsIdSaLHQTY2Vl8bVjYhRC8fDRUqIEVTQhJfSUkiQbHAQQ0TKz5fGhlDJyFMLVhCPS4vAxAcEFBfXykDEwoKMREjIU5TF19gaQ9sHQ8nPSpOWRIIFB1qIgUXSRILE2InX1YTXicnXydQDT8qJO6fRFtbWx1tottJDk4RJz1JWxtWLCdCbkBYNm8nSEFEQPWJU20EHxkTCxIjIBQaMlwvkIAgWEJzPSZOV15GUxoRbSU1KEEdAi0hXxpGHXpkDWURYRwDAURcEFFeW1MjQU9JIlxPYH8YUwJaLnEXbHBZOjksDVFC8ZtOUy4OUkElLEEyIVVeA/DlkI4hGA14byBCX0BdRE5bIAQcHQ5OBSdzeQhWDmIDHG5yX5DiN0RRXxwWc2htFRcIDE4AJTxIW1gRPw=="
+},
+{
+  id:"INC-0051", title:"Alerta duplicado — incidente já aberto",
+  category:"Duplicata / Ruído", prio:"Baixa", impact:"N/A", urgency:"Baixa",
+  sla:"08:00", user:"N/A", asset:"SRV-APP-03", source:"SIEM",
+  context:"Novo alerta para o mesmo comportamento suspeito em SRV-APP-03. Incidente INC-0039 já aberto e em análise pelo N2 (aberto há 45min). Mesmo IP, mesmo usuário, mesma regra SIEM. Sem evidência nova.",
+  timeline:[
+    {t:"11:00",c:"ok",txt:"INC-0039 aberto e atribuído a N2 (analista joao.p@besafe.com)"},
+    {t:"11:43",c:"warn",txt:"SIEM disparou nova regra para o mesmo evento — INC-0051 criado"},
+    {t:"11:44",c:"info",txt:"Correlação: mesmo IP, mesmo user, mesma regra, mesmo host"},
+    {t:"11:44",c:"info",txt:"Sem evidência adicional — apenas segundo disparo da mesma regra"},
+  ],
+  logs:`[11:43:55] siem ALERT rule=LATERAL_MOVEMENT_DETECTION src=SRV-APP-03
+[11:44:00] siem correlate INC-0051 → INC-0039 match=IP,USER,RULE,HOST
+[11:44:01] incident_mgmt INC-0039 status=IN_PROGRESS assignee=joao.p tier=N2`,
+  actions:[
+    {label:"Encerrar como duplicata — vincular ao INC-0039", code:"close"},
+    {label:"Escalar incidente crítico", code:"scale_critical"},
+    {label:"Escalar para N2 — segundo alerta é sinal", code:"scale_n2"},
+    {label:"Solicitar mais evidências", code:"more_evidence"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBTXllJX29NUBoCARMnDFlVBEEnMFlsCxx/bTBOXUJXaU1IIg8VS1tDUG5xTUgZXSUDSCBQQSc2YRdGQkdTFhgrBBcNAw8CKQxZVQRBJzBZbAsPECAxX1dEXRgafjgRHgACDxUjc1NeE102OksnUkw3Lm8NW15RX15fIxUXSREPCGIyTlMAXGIwQiMRY2FhY2hcU1dESFttAh0EDk4FNyNWUxVSNjIBbkdEPSw2QVMQU1kacwMiX1lRXVhiNhpbElohOkIgUA09IDdMEkBTRFsaIkETBwACCDEnWxoEVjEjQiBC7vI5JkEcEHtFSVVtAhoIDA9MMTYaXRNANpCOIRFJNm8lRF5RHhZU+e4OUh0TDwMjP1JVVlc3I0EnUkw3IG0PHhJUU19eLwARAj4ZEy09XRhMEQcgTi9dTCFvJ1hCXFtVW04sQbHAQQ0TKzJIGgRGgf5JIRFDPG8NHxJBR1MaUI7AUgwSGqLjc05IF1EjP0UvX0k8by1CEllcVVNeKA8GDE9OJicgTvnVXGI3SG5SRTIiIkldQxJTQlM+FRdJEQ8TI3NTSQVcbHEBbFdINishTFFbbUZbSDkIEwVDVENgfxhOBFohOA90E342KDZDVl8SV1ZfPxUTSREPEycwXxoVXCw1RDxcTJDogI5dEFZTGlMjAhsNBAAVJ30adxdAYjBCPENIPy6AivGTXRZXVT4VAAhBHxQnc/mTVlJiPkg9XExzPSZKQFESUlNJPQAACA8KDmI3T1sFEzQ2VytCA3FjYURGWV4UABgEDxEABQsPNjYaXgNDLjpOL1VCc3JjW1teUUNWWz9BEwZBHgArc18aEFYhO0w8Hw0RICINQkLxl05TLgBSIDUnLWxxRw=="
+},
+{
+  id:"INC-0052", title:"Usuário VIP sem acesso — sem IOC de segurança",
+  category:"Requisição de Serviço", prio:"Alta", impact:"Alto", urgency:"Alta",
+  sla:"01:00", user:"roberto.gomes (Diretor)", asset:"Portal RH / AD", source:"Usuário / Help Desk",
+  context:"Diretor Roberto Gomes sem acesso ao portal de RH desde 09:00. Reclamou diretamente com o CEO. Sem alertas de segurança. Logs: conta ativa, grupo correto, sem bloqueio. Ticket aberto como Incidente de Segurança (classificação do help desk).",
+  timeline:[
+    {t:"09:00",c:"warn",txt:"Diretor relata acesso negado ao portal RH"},
+    {t:"09:05",c:"ok",txt:"AD: conta ativa, grupos corretos, sem lockout"},
+    {t:"09:06",c:"ok",txt:"Nenhum alerta de segurança associado"},
+    {t:"09:07",c:"info",txt:"Ticket classificado como 'Incidente de Segurança' pelo HD"},
+  ],
+  logs:`[09:00:00] user_report roberto.gomes "Portal RH: acesso negado"
+[09:05:00] ad_lookup roberto.gomes status=ENABLED groups=DIRECTORS,HR_READ lockout=FALSE
+[09:06:00] siem search roberto.gomes last_24h alerts=NONE
+[09:07:00] helpdesk ticket=INC-0052 category="Segurança" (classificado por usuário HD)`,
+  actions:[
+    {label:"Escalar incidente crítico — VIP impactado", code:"scale_critical"},
+    {label:"Reclassificar como Requisição de Serviço", code:"reclassify"},
+    {label:"Escalar para N2 — VIP sem acesso", code:"scale_n2"},
+    {label:"Encerrar — sem evidência de segurança", code:"close"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBCV1VWWz4SGw8YTE1gIFlVBFYdMEI8Q0gwO2EXAxwQRVlVPwQtHhMBDyVxAApaETUhQiBWfTYhIkFGSRAMXFshEhdFQwgEJzdYWxVYHTBCPENIMDthFxBzXURIXzkOXEkyCwxiGnV5WhMxNkBuU0E8PjZIW18SUl8aPgQVHBMPD4H0WxZWUC09WS8RTCcmNUwcEGJEVVghBB8IQQoEYjJZXwVALXNMbkJEIDsmQFMQDxZoXzwUGxoIrcaB8FUaElZiAEg8R0SQ6CwBEl7xlVUaBA8RAAULDzY2Gl4TExE2SjtDTD2M5EwcEGBTWVYsEgEABwcCI38aXwVQIz9CIFANIy4xTBJVQ0NTSihBFgxBDxEuOllbtZSB8EJhcGlzKmNAU0JRVxppASBSDQRONwsDFBhaESQ2SCpTTDAkHFpAX1xRGABvNQAIFQ8TYiNIVRRfJz5MblVIcy4gSEFDXRZJXyBBOyYiTgItPlUaH10hOkkrX1k2byBf8Z1GX1lVbQUXSRILBjchW1S1lCNzTiFfSyYhJ0gSURJQU1YsQRdJDK3INiFTWRdAYhp5B30Dcx0mTl5RQUVTXCQCExtBrchiPBpZGUEwNlkhHw9/bSVIV1RQV1lREhETGxUHAC5xABhUH2AnXydSRnF1YXt7YBIdGkkoDFIIAgsSMTwaShdBJzBIbkRfNCotWVceEnMa+eRBkOn1TgwjIBpPBFSB+UMtWExzIYCOXRBfQ15bbQBSCg0PEjE6XFMVUoH07u1eDRobCmEcEPG/GkgoEAcAEgei5ZCZVVoTLJCOIRFEPSwqSVdeRlMaXihBAQwGGxMjPfmdFx1gfw8nRUQ/bXkPe2R7egAaBA8RAAULDzY2GgdWWiwnSDxDWCOM5O6RXxJY+ZkiQQIFAAAEKDJeW1gTEiFCLF1IPi5jSVcQQlNIVyQSAarCAUExNlcaP3wBcxBuY0giOipeW/OV9ZlVY0EiGwgBEys3W14TEyM/WS8RXTYjLA1keWIaGlcsElIKABoEJTxIUxcTITxfPFRZMmFhUA=="
+},
+{
+  id:"INC-0053", title:"Tentativa de SQLi bloqueada pelo WAF",
+  category:"Evento de Segurança", prio:"Média", impact:"Médio", urgency:"Média",
+  sla:"03:00", user:"N/A (IP externo)", asset:"APP-WEB-ECOMM", source:"WAF F5 / ModSecurity",
+  context:"WAF bloqueou 14 tentativas de SQL Injection clássico (UNION SELECT, OR 1=1) contra formulário de login do e-commerce. Todas retornaram HTTP 403. Banco de dados sem log de query anômala. IP atacante: 91.230.x.x (Rússia, blacklist pública).",
+  timeline:[
+    {t:"13:00",c:"warn",txt:"WAF: 14 tentativas SQLi em 3min — formulário /login"},
+    {t:"13:00",c:"ok",txt:"Todas retornaram 403 — WAF bloqueou, DB não recebeu query"},
+    {t:"13:01",c:"ok",txt:"DB logs: zero queries anômalas — nenhuma tentativa chegou ao backend"},
+    {t:"13:02",c:"info",txt:"IP 91.230.x.x em blacklist pública desde 2023"},
+  ],
+  logs:`[13:00:11] waf BLOCK src=91.230.x.x rule=SQL_INJECTION_UNION payload="' UNION SELECT"
+[13:00:xx] waf BLOCK x14 same_ip same_rule HTTP/403
+[13:01:00] db_log query_count_anomaly=0 unusual_queries=NONE
+[13:02:00] ti_lookup 91.230.x.x lists=SORBS,SPAMHAUS,AbuseIPDB reputation=MALICIOUS`,
+  actions:[
+    {label:"Solicitar mais evidências", code:"more_evidence"},
+    {label:"Escalar incidente crítico", code:"scale_critical"},
+    {label:"Encerrar — WAF bloqueou, sem impacto", code:"close"},
+    {label:"Escalar para N2 — tentativa de ataque externo", code:"scale_n2"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBTXllJX29NUBoCARMnDFlVBEEnMFlsCxx/bTBOXUJXaU1IIg8VS1tDUG5xTUgZXSUDSCBQQSc2YRdGQkdTFhgrBBcNAw8CKQxZVQRBJzBZbAsPECAxX1dEXRgabQwnUg8UAAIrPFRbGFctc04hXEJzKjBdV0JTUlUUbVBGSRULDzYyTlMAUjFzTyJeXCYqIklTQx4WfnhtCBwdAA0VLX8aSRNeYjJOK0JePG8iQhJSU1VRXyMFXEkzCwYrIE5IFxMLHG5iEUwnOiJBW0pTFlhWLAIZBQgdFWIgXxoYViE2Xj3yjCEmLA1XEFdYWV8/ExNHQTwUgf5eVVZXJ3NeLVBDPSoxDVNFRllX+ewVGwoOQENucVxfE1cgMk4lblohIC1KEAoQYXt8bQMeBhAbBC0mGk4ZVyMgDS9CDScqLVlTRFtAW0ljQTYrQQCi4TwaSBNQJzFIOxFDMisiAxJ5QUVVGo7IUj4gKEEkJlRZH1wsMkMqXgFzIYCOXRBbWFlTKQQcHQRAQ25xXF8TVyAyTiVuXTI9N0RTXBAMGBhhQwYbCA0KYGkYC0ITNjZDOlBZOjkiXhJUVxZpawEIUhkAHAQhNhpJtZowOkJgEWAyPGNZXVRTRRpcIhMTBEEMDS0iT18XVyMgDS9fWTY8Y0lXEFFeX10sE1IIDk4DIz1ZVVgRbnFEOlhBcXVheVdeRldOUzsAUgsNARA3NlteFxMxNkBuWEAjLiBZXRAPFn9MKA8GBk9OL4HwVRq1mmI6Qy1YSTYhN0gSeWZ/dhRvHA=="
+},
+{
+  id:"INC-0054", title:"SQLi com HTTP 500 e dump parcial de dados",
+  category:"Incidente de Segurança", prio:"Crítica", impact:"Crítico", urgency:"Alta",
+  sla:"00:30", user:"N/A (IP externo)", asset:"APP-WEB-PORTAL", source:"WAF / App Logs",
+  context:"WAF não bloqueou payload SQLi (bypassou com encoding). App retornou HTTP 500 seguido de 200 com conteúdo de resposta anômalo. Log do app: query com UNION SELECT executada. Dados retornados: 3 linhas de tabela 'usuarios' visíveis no response.",
+  timeline:[
+    {t:"15:22",c:"err",txt:"WAF: SQLi com encoding duplo — regra não disparou (bypass)"},
+    {t:"15:22",c:"err",txt:"App: HTTP 500 seguido de 200 — comportamento anômalo"},
+    {t:"15:23",c:"err",txt:"DB log: SELECT * FROM usuarios WHERE id='' UNION SELECT ... executado"},
+    {t:"15:23",c:"err",txt:"Response body: 3 linhas de dados de usuários expostos"},
+  ],
+  logs:`[15:22:07] waf ALLOW src=45.142.x.x payload="'%2520UNION%2520SELECT" (bypass detected late)
+[15:22:08] app HTTP/500 then HTTP/200 content_length=4821 (anomalous)
+[15:23:00] db_log query="SELECT * FROM usuarios WHERE id='' UNION SELECT username,password,email FROM usuarios--"
+[15:23:01] app_log response_contains_pii=TRUE rows_exposed=3`,
+  actions:[
+    {label:"Solicitar mais evidências", code:"more_evidence"},
+    {label:"Encerrar — apenas 3 linhas expostas", code:"close"},
+    {label:"Escalar para N2", code:"scale_n2"},
+    {label:"Escalar incidente crítico — dados expostos", code:"scale_critical"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBDUVdWXxICAAAVBwIjPxgWVEAhPF8rbk48PTFIUUQQDAsWbxIRBhMLPjUhVVQREXh+HGITWiEgLUpiVVxXVk40Q0gdExsEbnFcXxNXIDJOJW5OPD0xSFFEEAwYeSITAAwVAU9iAGt2HxMnK0gtRFkyKywNUV9fFklPLgQBGg5ODy1zWFsYUC1zBm5VTDcgMA1WVRJDSU+OwAAADh1BLDwaSBNAMjxDPVQNbm81TEhRX1NUTiJBEQYPCAgwPlteGR1iBGwIEU8qPyJeQVFWWRQaHVBSAAwLBSsyTlVMEysgQiJQX3MuM10eEFxZTlMrCBEIE04lEhwaEjp0EhcEYhFMMCYsQ1NCEngIFQNSXkkRHAQxNkhMF0FiNlsnVe75ISBEU0McFBYYKwQXDQMPAikMTUgZXSVxF2wWfpD8Yx4SXFtYUls+RlKqyE4AMDRPVxNdNjwNKlQNMis1QlVRVlkaXihBFgwHCxIjfxpUtZAtc0krEUw9Li9EQURTFl5fbTI9Kk9OMhMfUxoVXCw1RDxcTDcgYwYSYHt/Gl81ER0aFQ9Bf3NTVBVaJjZDOlQNMD2AgEZZUVkWGiQPFgwRCw8mNlROExMmPA04XkEmIiYDEBwQUF9fKQMTCgoxESMhTlMXX2BpD2wdDyc9Kk5ZEggUCRohCBwBAB1BMjJIXxVWL3NdIUROPGFjYFNDEmVrdiRBFxEEDRQ2Ml5VVlAtPg09RE42PDBCElUSYXt8bQMLGQAdEiM3VRpLEyAhSC1ZTHMuN0REURJHT19tER0NBE4SJyEaWxtDLjpMKlADcWNhREZZXhQAGBsIHQUArcaB8FUaElZiN0wqXg14bzBEQURXW1saLg4fGRMBDCcnU14ZE39zfX8RbiGM7llbU10WERojDgYABwcCI5Cd+dVcYjxPPFhKMjuAnkBZUxYSdgoxNkYgIDEGehQYCw=="
+},
+{
+  id:"INC-0055", title:"Falha de backup classificada como incidente de segurança",
+  category:"Problema de Infraestrutura", prio:"Média", impact:"Médio", urgency:"Baixa",
+  sla:"04:00", user:"svc.backup", asset:"BKP-SRV-02", source:"Veeam / SIEM",
+  context:"SIEM alertou 'acesso não autorizado a dados' em BKP-SRV-02. Investigação: job de backup do Veeam falhou por erro de autenticação do serviço (senha expirada). Nenhum acesso externo. Dados não foram acessados por terceiros. Classificação errada do SIEM.",
+  timeline:[
+    {t:"02:00",c:"err",txt:"Veeam: job de backup falhou — erro de autenticação (svc.backup)"},
+    {t:"02:01",c:"warn",txt:"SIEM categorizou como 'acesso não autorizado a dados'"},
+    {t:"02:05",c:"ok",txt:"Verificado: senha de svc.backup expirada (política de 90 dias)"},
+    {t:"02:06",c:"ok",txt:"Sem acesso externo, sem dado exposto, sem IOC"},
+  ],
+  logs:`[02:00:14] veeam JOB_FAILED job=DAILY_BACKUP error=AUTH_FAILURE account=svc.backup
+[02:00:15] siem ALERT rule=UNAUTHORIZED_DATA_ACCESS (false positive rule trigger)
+[02:05:00] ad_audit svc.backup password_expired=TRUE last_change=90_days_ago
+[02:06:00] backup_audit external_access=NONE data_exposed=FALSE`,
+  actions:[
+    {label:"Encerrar — falha operacional, sem IOC", code:"close"},
+    {label:"Reclassificar para problema de infra", code:"reclassify"},
+    {label:"Escalar para N2 — acesso não autorizado", code:"scale_n2"},
+    {label:"Solicitar mais evidências", code:"more_evidence"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBCV1VWWz4SGw8YTE1gIFlVBFYdMEI8Q0gwO2EXAxwQRVlVPwQtHhMBDyVxAApaETUhQiBWfTYhIkFGSRAMXFshEhdFQwgEJzdYWxVYHTBCPENIMDthFxBzXURIXzkOXEknDw0qMhpeExMgMk4lRF1zPyxfEkNXWFJbbQQKGQgcACYyGgdWQzA8TyJUQDJvLF1XQlNVU1UjAB5JBQtBKz1cSBdWMSdfO0VYIS5vDVzzkVkaUyMCGw0EABUnc15fVkAnNFg8UEOQ6CIDEmJXVVZbPhIbDwgNAG5zVFUCWiQ6Ti8RSCI6Kl1XEFZTGlMjBwAIQR4AMDIaSBNAJydMPBFeNiErTBJVEldQTz4VE0kAThMnNEhbVmALFmBuQUwhLmNIRFlGV0gaKwAeGg5OES0gU04fRS1zXytSQiE9JkNGVRwUFhgrBBcNAw8CKQxNSBldJXEXbGJIPSciDVdIQl9IWykAUg0ETgItPU5bVlcnc14rQ1s6jORCElNTQ0lVOEEUCA0GAGI3XxoUUiE4WD4fDQAqLg17f3EaGkkoDFIIAgsSMTwaXw5HJyFDIR8NGjwwQhLzmxZOUy4KFx1BCgRiPEpfBFKB9O77VF5/by3ukV8SRV9dOBMTB6LJAGxxFhgQVic3Ty9SRgw/Il9GWVNaGABvQ15LFRwIITgYAFQUAzBIPUJCcyGAjl0QU0NOVT8ICAgFAUEjc15bElwxdA09XkxzLjdIQEJTUlVIY0E/CBJOAGIhX10EUmI3Qm5iZBYCY0lbQ0JXSFU4QQIGE04HIz9SW1ZXJ3NMO0VFc63DuRJe8ZVVGj0OAEkADQQxIFUaBFYjPwNsHQ86OypBEAoQcFtWJQBSDQROEichTFO1lC1zXSFDDTAuNl5TEFtYTl8/DxNJAgEPKjZZUxJSYm4NHkNCMSMmQFMQVlMacyMHAAgEHRUwJk5PBFJuc0ONkkJzBi1OW1RXWE5fbQUXSTILBjchW1S1lCN9DzM="
+},
+{
+  id:"INC-0056", title:"EDR isolou host automaticamente",
+  category:"Incidente de Segurança", prio:"Alta", impact:"Alto", urgency:"Alta",
+  sla:"01:30", user:"fernanda.costa", asset:"WS-FIN-019", source:"CrowdStrike EDR",
+  context:"EDR (CrowdStrike Falcon) isolou automaticamente WS-FIN-019 após detectar comportamento de ransomware: shadow copy deletion + mass encryption de arquivos em pastas de rede mapeada. Processo: svchost.exe (assinatura inválida). Usuária: fernanda.costa, financeiro.",
+  timeline:[
+    {t:"09:45",c:"err",txt:"EDR: svchost.exe (assinatura inválida) iniciando mass file operation"},
+    {t:"09:45",c:"err",txt:"EDR detectou: vssadmin delete shadows /all /quiet"},
+    {t:"09:46",c:"err",txt:"Arquivos .docx/.xlsx sendo renomeados para *.locked na rede"},
+    {t:"09:46",c:"ok",txt:"EDR isolou WS-FIN-019 automaticamente — rede cortada"},
+  ],
+  logs:`[09:45:31] edr DETECT svchost.exe sig_invalid vt_score=54/72 behavior=MASS_FILE_OPS
+[09:45:32] edr DETECT cmd="vssadmin delete shadows /all /quiet"
+[09:45:33] edr DETECT file_rename *.docx→*.locked count=847 network_share=\\\\SRV-FILE-01\\financeiro
+[09:46:00] edr ACTION network_isolation host=WS-FIN-019 status=ISOLATED`,
+  actions:[
+    {label:"Escalar incidente crítico — ransomware ativo", code:"scale_critical"},
+    {label:"Solicitar evidências adicionais", code:"more_evidence"},
+    {label:"Escalar para N2", code:"scale_n2"},
+    {label:"Encerrar — EDR isolou, contido", code:"close"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBDUVdWXxICAAAVBwIjPxgWVEAhPF8rbk48PTFIUUQQDAsWbxIRBhMLPjUhVVQREXh+HGITWiEgLUpiVVxXVk40Q0gdExsEbnFcXxNXIDJOJW5OPD0xSFFEEAwYeSITAAwVAU9iAVtUBVwvJEw8VA0yOypbXRBRWVRcJBMfCAUBW2IgUlsSXDVzTiFBRDY8Y0lXXFdCW14sElJCQVZVdXNbSAdGKyVCPRFOOikxTFZfQRYRGgglIEkIHQ4uPE8UVn4jIA0hEU48IjNMQERbWlJbIAQcHQ5OBSdzSF8SVmI57u8RSzwmY0xUVUZXXlVjQSJYW04AITpVVBdBYhp/YhFbNj0qS1tTU0QaXzUVFwcSrcItc15VVlcjPUJuX0JzPCZfRFlWWUgaKQRSCBMfFCslVUlaEyE8QDtfRDAuMQ1VVUFC+ZkiQRdJCAAIITpbSFZ3EAMNPVQNPSogSEFD8ZdIUyJPUEVDCAQnN1hbFVgdJF8hX0pxdWFodmISX0lVIQ4HSQ5OBCw3SlUfXTZ/DSNQXnN3dxoSUUBHT1M7DgFJDwFBMTZITB9XLSENKlQNISonSBJa8ZcaXCITEwRBDQgkIVteGUBscwoNXkMnJidCFRBc9ZlVbaLbSQBOESM/W0wEUmIwSDxFTHM+NkxcVF0WVRo+CRMbBE4HKz1bVBVWKyFCbldCOm8qQEJRUUJbXiJPUEVDCAQnN1hbFVgdI0w8RUQyI2EXEBIeFE5IJAIZS1tMRgcXaBofQC0/QjsWDSMuMUhRVRJEX0kiDQeqxq3CLX0adxdAYjwNKlBDPG8tQhJTXVtKWz8VGwUJDwwnPU5VVlcnc18rVUhzJYCMEl9RWUhIKBRSDRQcACwnXxoZQGJnGm5CSDQ6LUldQxJSXxooGRcKFK3GgfBVFFQfYDpZJ10PaW0RTFxDXVtNWz8EUggVBxctcxEaElImPF5uUkQ1PSJJXUMSCxpqfE9SLTM+QTI8Xl9WQzA2TidCTCFvMEhAEFNVU1UjABYGT0wc"
+},
+{
+  id:"INC-0057", title:"IOC antigo sem correspondência no endpoint",
+  category:"Evento / Ruído", prio:"Baixa", impact:"Baixo", urgency:"Baixa",
+  sla:"08:00", user:"N/A", asset:"Threat Intelligence", source:"SIEM / TIP",
+  context:"Plataforma de Threat Intelligence atualizou feed e adicionou hash MD5 de malware de 2019. SIEM correlacionou com eventos históricos de 2023 em SRV-TEST-01 (servidor de testes, descomissionado há 6 meses). Nenhum endpoint ativo com o hash. Arquivo não existe mais.",
+  timeline:[
+    {t:"08:00",c:"info",txt:"TIP atualizou feed: hash MD5 abc123 (malware 2019) adicionado"},
+    {t:"08:01",c:"warn",txt:"SIEM retroativo: hash encontrado em log de 2023 (SRV-TEST-01)"},
+    {t:"08:02",c:"ok",txt:"SRV-TEST-01: servidor descomissionado há 6 meses"},
+    {t:"08:03",c:"ok",txt:"Busca em endpoints ativos: zero correspondências"},
+  ],
+  logs:`[08:00:00] tip FEED_UPDATE hash=abc123 malware=Backdoor.Oldrat.2019 added=NOW
+[08:01:00] siem RETROACTIVE_MATCH host=SRV-TEST-01 date=2023-03-15 hash=abc123
+[08:02:00] cmdb SRV-TEST-01 status=DECOMMISSIONED since=6_months_ago
+[08:03:00] edr_hunt hash=abc123 active_endpoints=0 matches=NONE`,
+  actions:[
+    {label:"Escalar incidente crítico", code:"scale_critical"},
+    {label:"Escalar para N2 — IOC confirmado em log", code:"scale_n2"},
+    {label:"Solicitar mais evidências", code:"more_evidence"},
+    {label:"Encerrar — IOC sem contexto atual, host inativo", code:"close"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBTXllJX29NUBoCARMnDFlVBEEnMFlsCxx/bTBOXUJXaU1IIg8VS1tDUG5xTUgZXSUDSCBQQSc2YRdGQkdTFhgrBBcNAw8CKQxZVQRBJzBZbAsPECAxX1dEXRgacwIiUg0ETlNyYgMaBFY2IUIvRUQlLi5IXERXFlNeKA8GAAcHAiM3VRoTXmIgSDxHRDcgMQ1WVUFVVVckEgEADgAAJjwaUrWSYmUNI1ReNjxvDUFVXxZZVT8TFxoRAQ8mkJBUFVojc0gjEUM2IStYXxBXWF5KIggcHUEPFSslVRRWejEgQm7yhHMuMVlXVlNCVRolCAEdot0TKzBVFlZdgfBCblBANi6AilMQU0JPWyFPUi0ODRQvNlROFxMnc0ggUkghPSIDEBwQUF9fKQMTCgoxFjA8VF1UCWAaYg0RRCAgL0xWXxJTVxohDhVJBQtBMTZITB9XLSENJvKMcyI2REZfElJfSS4OHwASHQgtPVteGR9iIEgjEU48PTFIQUBdWF755w8RAABOADY6TFtaEyyQjiERRyY8N0RUWVFXGl8+AhMFAAoAbHNuUgRWIycNJ19ZNiNjX1dEQFlbTiQXHUmD58FiMldfF/DlMg0vRUQlLm0PHhJUU19eLwARAj4eADAnU1saEXhxD2ITWSEmIEYQChB/dXltAh0HBwcTLzJeVVZWL3NBIVYNIy4xSFFVEkZfSCQGHRoOQEEPMkkaGRMxNl84WEk8PWND8ZNdFl9CJBIGDEEDACsgGl9WXSc9RTtcDTYhJ11dWVxCGls5CAQGQRoEL3NVGh5SMTsDbB0POjsqQRAKEGVfV20ABgAXAUErPkpbFUcjN0JiEV42ImNfW0NRWRpbORQTBUFTQSc9WV8EQSMhDS1eQHMhLFlTEFpfSU6O0gAAAg9PYC4="
+},
+{
+  id:"INC-0058", title:"Serviço parado após mudança fora da janela",
+  category:"Incidente + Mudança Não Autorizada", prio:"Alta", impact:"Alto", urgency:"Alta",
+  sla:"01:30", user:"lucas.dev", asset:"SRV-APP-PAGAMENTOS", source:"Monitoring / ITSM",
+  context:"Serviço de pagamentos caiu às 22:47. Análise: lucas.dev fez deploy fora da janela de mudança (janela era 00:00–02:00). Mudança não foi aprovada pelo CAB. Rollback automático falhou. Clientes sem acesso ao portal de pagamentos.",
+  timeline:[
+    {t:"22:47",c:"err",txt:"SRV-APP-PAGAMENTOS: serviço indisponível — alerta de monitoramento"},
+    {t:"22:50",c:"err",txt:"lucas.dev fez deploy v2.4.1 às 22:44 (fora da janela aprovada)"},
+    {t:"22:51",c:"err",txt:"Mudança sem aprovação de CAB — violação de processo"},
+    {t:"22:52",c:"err",txt:"Rollback automático falhou — versão anterior corrompida"},
+  ],
+  logs:`[22:44:00] deploy lucas.dev version=2.4.1 server=SRV-APP-PAGAMENTOS change_approved=FALSE
+[22:47:02] monitor SRV-APP-PAGAMENTOS status=DOWN uptime=0
+[22:51:00] change_mgmt change_window=00:00-02:00 actual_time=22:44 CAB_approval=NONE
+[22:52:00] rollback status=FAILED previous_version=CORRUPT`,
+  actions:[
+    {label:"Encerrar — causa identificada", code:"close"},
+    {label:"Solicitar mais evidências", code:"more_evidence"},
+    {label:"Escalar incidente crítico — serviço crítico fora do ar", code:"scale_critical"},
+    {label:"Reclassificar para problema de infra", code:"reclassify"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBDUVdWXxICAAAVBwIjPxgWVEAhPF8rbk48PTFIUUQQDAsWbxIRBhMLPjUhVVQREXh+HGITWiEgLUpiVVxXVk40Q0gdExsEbnFcXxNXIDJOJW5OPD0xSFFEEAwYeSITAAwVAU9iAF9IAFqB9EJuVUhzPyJKU11XWE5VPkEUBhMPQSY8GlsEE2lzQDtVTD2M5EwSXvGVVRosFAYGEwcbIzdbGl0TMDxBIlNMMCRjS1NcWllPGnBBIlhBLROB/k5TFVxsc2wtWEI9LjENVVVBQvmZIk1SJ1NBL3FzSlsEUmIhSD1FTCY9Iu6V85FZGlcsDwcIDUJBITxXTxhaITJfbvKMISoiDVZVElhfXY7SEQAOHUEnc0hfEVoxJ18vQw0lJixBU/OV9ZlVbQUXSREcDiE2SUkZEzIyXy8RWSEuN0xGWURXGl4kEhEAEQIILDJIGgZcMSdIPFhCIWFhARBWV1NeWCwCGTYWHA4sNBgAVHAjJl4vEUQ3Ki1ZW1ZbVVteLEGQ4MFOEycgVVYAWiY8A25+DSAqMVtb85VZGlskDxYIQQsSNpCbGhBcMDINKl4NMj1tDXtUV1hOUysIEQgTTg5iME9WBlImPA0g8o48bzNMVVESWUkaLg0bDA8aBDFzS08TEyyQjiERTjwhMEhVRVdbGlsuBAEaABxBLXNKVQRHIz8DbB0PNSomSVBRUV1lSiwTBgAAAkN4cRgWVEcwOk4lExdxaABMR0NTFlNeKA8GAAcHAiM3Wx1WQyMhSC1UDSEqMEJeRldEGlVtAhoIDA8FLX0adxdAYjwNPVRfJSaAil0QU19UXixBFxoVrcBiN1VNGBMnc18hXUExLiBGElZTWlJVOE9QRUMHFSs/GABUfjc3TCDyijJvLe6RXxJXT04iExsTAAoAYjBbTwVSLDdCblhDMCYnSFxEVxYHGh1QUkJBHAQlOklOBFxiN0huR0Q8IyLulfORWRpeKEECGw4NBDEgVRRUTg=="
+},
+{
+  id:"INC-0059", title:"Múltiplos failed logins — usuário digitando senha errada",
+  category:"Evento / Ruído", prio:"Baixa", impact:"Baixo", urgency:"Baixa",
+  sla:"08:00", user:"beatriz.alves", asset:"AD / VPN", source:"SIEM / AD",
+  context:"SIEM alertou para 23 failed logins de beatriz.alves em 10 minutos. Análise: todos os logins falharam pelo mesmo IP (notebook dela, IP fixo interno). Após os 23, login bem-sucedido. A própria usuária abriu ticket 5 minutos depois: 'estava tentando lembrar a senha'.",
+  timeline:[
+    {t:"10:15",c:"warn",txt:"23 failed logins: beatriz.alves — IP 10.20.5.44 (notebook interno)"},
+    {t:"10:25",c:"ok",txt:"Login bem-sucedido — mesmo IP, mesma máquina"},
+    {t:"10:30",c:"info",txt:"Beatriz abriu ticket: 'Esqueci minha senha, consegui lembrar'"},
+    {t:"10:31",c:"ok",txt:"Nenhum lockout — política: lockout após 30 tentativas"},
+  ],
+  logs:`[10:15:00] ad FAILEDLOGIN user=beatriz.alves src=10.20.5.44 x23_attempts
+[10:25:11] ad LOGIN_SUCCESS user=beatriz.alves src=10.20.5.44
+[10:30:00] helpdesk ticket=REQ-1122 user=beatriz.alves desc="esqueci senha, ok agora"
+[10:31:00] ad lockout_status=FALSE threshold=30`,
+  actions:[
+    {label:"Encerrar — usuário confirmou, sem IOC", code:"close"},
+    {label:"Solicitar mais evidências", code:"more_evidence"},
+    {label:"Escalar incidente crítico", code:"scale_critical"},
+    {label:"Escalar para N2 — 23 tentativas é suspeito", code:"scale_n2"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBTXllJX29NUBoCARMnDFlVBEEnMFlsCxx/bTBOXUJXaU1IIg8VS1tDUG5xTUgZXSUDSCBQQSc2YRdGQkdTFhgrBBcNAw8CKQxZVQRBJzBZbAsPECAxX1dEXRgadygSHwZBJzFuc1dfBV4tc0knQl08PCpZW0ZdGhpPPhSxyBMHAGIwVVQQWjA+QjsRTHMsIlhBUR4WTlMuChcdQR4TgeBKSB9cYjdIIlANMi0mX0ZfHBZzST4OUqrITg5iIk9fVkMjIUgtVBdzLi9KR/ObWxpLOARSHQQAFS0mGghFEyE8QCxYQzKM5O6HVUEWXlMrBAAMDxoEMXNeW1ZeJyBALxFeNiErTBJBR1MaWT8IHRxBSREjIVsaGEYsMExuVF4iOiZOV0IVGBp/IwIXGxMPT2B/GFwTViYxTC1aciQ9LENVEggUCAltFRcHFQ8VKyVbSVZXLXNAK0JAPG8KfRJZXEJfSCMOUgoOA0Ejc0pItYAyIUQvEVggOoCMQFlTFllVIwcbGwwPDyY8GltWUCMmXi8REHM9Nu6fVF0WWVUgQRMcFQFMJytKVh9QI5CKjZJCfW8GXlFRXldIGiQSAQZBDQ4sIFVXExMMYQ0qVF49KiBIQUNTRFNbIAQcHQRAQ25xXF8TVyAyTiVuXTI9N0RTXBAMGBhhQwYbCA0KYGkYCEUTNjZDOlBZOjkiXhJAU0RfWShBEBsUGgRiNVVIFVZsc2AvQg0aH2NLW0hdFlNUOQQABw5OSmImSU+1kjA6TG5SQj0pKl9fUVxSVRpwQRcbEwFBKiZXWxhcYjBBjZBeICYgQhwSHhRTTiQNUFNDKxcnPU5VVkAnPg0nXF0yLDdCElNdWFxTPwwTDQ5CQSEyT0kXEyY2DTtCWJDuMURdEA8WVPnuDlKqyE4ILDBTXhNdNjYDbEw="
+},
+{
+  id:"INC-0060", title:"MFA fatigue: múltiplas negativas e uma aprovação",
+  category:"Incidente de Segurança", prio:"Alta", impact:"Alto", urgency:"Alta",
+  sla:"01:30", user:"paulo.mendes", asset:"M365 / Authenticator", source:"Azure AD / SIEM",
+  context:"Paulo Mendes recebeu 31 notificações de MFA (push) em 8 minutos. Negou as primeiras 30. A 31ª foi aprovada. Login bem-sucedido de Amsterdã. Paulo está em Recife. Sem viagem agendada. Paulo reportou ter aprovado sem querer ao mexer no celular.",
+  timeline:[
+    {t:"20:10",c:"err",txt:"Azure AD: 30 push MFA enviados para paulo.mendes — todos negados"},
+    {t:"20:18",c:"err",txt:"Push MFA #31 — aprovado (Authenticator)"},
+    {t:"20:18",c:"err",txt:"Login bem-sucedido: paulo.mendes — Amsterdam, NL"},
+    {t:"20:20",c:"info",txt:"Paulo reportou: 'aprovei sem querer, estava tentando fechar a notificação'"},
+  ],
+  logs:`[20:10:00] aad MFA_PUSH user=paulo.mendes x30 DENIED ip=185.x.x.x loc=NL
+[20:18:01] aad MFA_PUSH user=paulo.mendes #31 APPROVED
+[20:18:02] aad LOGIN_SUCCESS user=paulo.mendes ip=185.x.x.x loc=NL
+[20:20:00] user_report paulo.mendes "aprovei o MFA sem querer, não sou eu lá fora"`,
+  actions:[
+    {label:"Solicitar mais evidências", code:"more_evidence"},
+    {label:"Escalar incidente crítico — MFA fatigue confirmado", code:"scale_critical"},
+    {label:"Encerrar — usuário confirmou erro próprio", code:"close"},
+    {label:"Escalar para N2", code:"scale_n2"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBDUVdWXxICAAAVBwIjPxgWVEAhPF8rbk48PTFIUUQQDAsWbxIRBhMLPjUhVVQREXh+HGITWiEgLUpiVVxXVk40Q0gdExsEbnFcXxNXIDJOJW5OPD0xSFFEEAwYeSITAAwVAU9iEk5bB0Ync0krEWAVDmNLU0RbUU9fbQIeqsAdEiswVRpdEyEhSCpUQzAmIkESU11bSkgiDBcdCAoAYngaSRNAMZCOIRFMJyY1TBJeUxZyVSEAHA0AQEEDc1tKBFw0Mu7p8o48byJOW1RXWE5bIUECDA0BQTcgT/nXQSs8DSDyjjxvLUhVURJZGlkiDAIbDgMENjpXXxhHLX0NHFRbPCgiXxJDV0VJ+e4OUgAMCwUrMk5bG1YsJ0hiEUs8PYCKU0ISRF9JKBVeSQQdAiM/W0hWY3N9D2ITSzYqJ09TU1lpTUgiDxVLW0xGAyNIVQBWK3NeK1wNIjomX1dCFRZU+e4OUh0OHA8jc1UaGlwlOkNuXUg0jO5ZW11dGBp7bRIXGhKtwi1zX0kC8ONzTDpYWzJvLUwSeF1aW1QpAFIKDgNBI3NZVRhHI3NOIVxdISAuSEZZVlcaXiJBBxoUrcAwOlUUVnoxIEJu8oRzH3IDEBwQUF9fKQMTCgoxESMhTlMXX2BpD2wdDyc9Kk5ZEggUdRo4EgeqwBwILXNfQgZfKzBMIFVCcz42SBJWXV8aHT4EH0kQGwQwNkgdVkMjIUgtVA0hKjBCXkZXRBpVbQITGg5AQQyQmVVWQScgQiJHSHOtw7kSURJFX0k+otEGQQMALjpZUxlAI3NMJ19JMm8mXkbzkxZbTiQXE0dDQkMrJ1NWVAlgEF8rVUg9LCpMXhBRWVdKPw4fDBUHBSNzSlUEEw8VbG5XTCcmJFhXEA8WagtjQSAMFwEGIyEaSRNAMZCOIRFEPionRFNEU1tfVDkEXEsc"
+},
+{
+  id:"INC-0061", title:"Download de ferramenta administrativa — SysInternals",
+  category:"Evento / Atividade Legítima", prio:"Baixa", impact:"Baixo", urgency:"Baixa",
+  sla:"06:00", user:"thiago.admin", asset:"WS-ADMIN-03", source:"Proxy / EDR",
+  context:"EDR alertou para download de PsExec.exe (SysInternals) por thiago.admin no próprio workstation administrativo. IP de download: live.sysinternals.com (Microsoft). thiago.admin é administrador de sistemas sênior. Nenhuma execução suspeita registrada.",
+  timeline:[
+    {t:"14:30",c:"warn",txt:"Proxy: thiago.admin baixou PsExec.exe de live.sysinternals.com"},
+    {t:"14:30",c:"warn",txt:"EDR: download de 'ferramenta de administração remota'"},
+    {t:"14:31",c:"ok",txt:"Fonte: live.sysinternals.com (domínio oficial Microsoft)"},
+    {t:"14:32",c:"ok",txt:"thiago.admin: administrador sênior de sistemas, uso documentado"},
+  ],
+  logs:`[14:30:22] proxy GET live.sysinternals.com/PsExec.exe user=thiago.admin status=200
+[14:30:23] edr ALERT file=PsExec.exe category=REMOTE_ADMIN_TOOL risk=MEDIUM
+[14:31:00] dns live.sysinternals.com → MICROSOFT_OWNED verified=TRUE
+[14:32:00] hr_profile thiago.admin role=SENIOR_SYSADMIN authorized_tools=[PsExec,PsInfo,TCPView]`,
+  actions:[
+    {label:"Escalar para N2 — PsExec é dual-use", code:"scale_n2"},
+    {label:"Solicitar mais evidências", code:"more_evidence"},
+    {label:"Escalar incidente crítico", code:"scale_critical"},
+    {label:"Encerrar — ferramenta legítima, admin autorizado", code:"close"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBTXllJX29NUBoCARMnDFlVBEEnMFlsCxx/bTBOXUJXaU1IIg8VS1tDUG5xTUgZXSUDSCBQQSc2YRdGQkdTFhgrBBcNAw8CKQxZVQRBJzBZbAsPECAxX1dEXRgaeykMGwcIHRUwMl5VBBMxkIcgWEIhbyBCXxBCU0hXJBIBqsIBQSY8WU8bViwnTCpQDSMuMUwSVldESFsgBBwdAB1BESpJcxhHJyFDL11ecy0iREpRXFJVGh0SNxEEDUEmPBpJE0E0OkkhQw08KSpOW1FeFl5bbSwbChMBEi01ThRWYCc+DStJSDA6gIrxk10WSU8+ERcAFQ9PYgFP+dtXLXNJKxFoFx1jTl1dEkRfXT8AUg4EAKLrIVNZFxMyMl8vEX8SG2NZXV9eRRQYYUMUDAQKAyMwUWUBQS09SmwLDwM8BlVXUxL1kxopFBMFTBsSJ38aVxdAYjFMJ0lMNyBjXV1CEldeVyQPUggUGg4wOkBbElxiN0JuQkQnKmNCVFlRX1tWbQUTSSwHAjA8SVUQR25zXitcDTY3Jk5H85X1mVVtEgcaEQsINjIUGjNAITJBL0MNOjwwQhJZXFBWW20MscAVHAghMkkaElZiHR9uQkg+by5CRllEWRQYYUMUDAQKAyMwUWUGUjAnRC9dD2ltYQEQREBfWVFvW1A5EisZJzAaThNeYj7u7xFfNj82WVPzlfWZVW0RHRsQGwRiMk5OF1ApNl89EUJzOjBMXx4Se1tJbQAWBAgAQTGQkFQfXDBzTDtFQiEmOUxWXx4WXFUjFRdJDggIITpbVloTMTZAblRVNiw27pXzkVkaSTgSAgwIGgBibhpWE1SB/lknXEJ9bW8PW0RbWhgAbyAGABcHBSM3XxoSXCEmQCtfWTIrIg1WVRJGSFUrCAEaCAEPIz8aWwNHLSFENFBJPG9+DVzzkVka+eRBGwcCBwUnPU5fWBE/"
+},
+{
+  id:"INC-0062", title:"RDP fora do horário em servidor sensível",
+  category:"Incidente de Segurança", prio:"Alta", impact:"Alto", urgency:"Alta",
+  sla:"01:45", user:"diego.silva", asset:"SRV-ERP-01", source:"SIEM / Windows Event Log",
+  context:"Login RDP em SRV-ERP-01 (servidor ERP de produção, dados financeiros) às 03:22. Usuário: diego.silva (desenvolvedor júnior, sem permissão documentada para ERP de produção). IP de origem: IP residencial. Sem ticket de manutenção aberto.",
+  timeline:[
+    {t:"03:22",c:"err",txt:"RDP login: diego.silva → SRV-ERP-01 (horário incomum)"},
+    {t:"03:23",c:"err",txt:"diego.silva: dev júnior — sem autorização para ERP produção"},
+    {t:"03:24",c:"warn",txt:"IP origem: 189.x.x.x (IP residencial, não é VPN corporativa)"},
+    {t:"03:25",c:"err",txt:"Sem ticket de manutenção ou change request associado"},
+  ],
+  logs:`[03:22:11] winlog EventID=4624 user=diego.silva src=189.x.x.x logon_type=10 (RDP)
+[03:22:12] siem ALERT rule=RDP_OFFHOURS_SENSITIVE host=SRV-ERP-01 user=diego.silva
+[03:23:00] hr_profile diego.silva role=DEV_JUNIOR authorized_systems=[DEV,QA] prod_access=NONE
+[03:25:00] change_mgmt diego.silva open_changes=0 maintenance_windows=0`,
+  actions:[
+    {label:"Solicitar mais evidências", code:"more_evidence"},
+    {label:"Escalar para N2", code:"scale_n2"},
+    {label:"Escalar incidente crítico — acesso não autorizado a ERP", code:"scale_critical"},
+    {label:"Encerrar — pode ser hora extra legítima", code:"close"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBDUVdWXxICAAAVBwIjPxgWVEAhPF8rbk48PTFIUUQQDAsWbxIRBhMLPjUhVVQREXh+HGITWiEgLUpiVVxXVk40Q0gdExsEbnFcXxNXIDJOJW5OPD0xSFFEEAwYeSITAAwVAU9iF19MVlmB6UMnXl9zPCZAElFHQlVIJBsTqsatwi1zXlUVRi82QzpQSTJvIk5XQ0FXVF4iQTc7MU4FJ3NKSBlXN5CKjZJCc4zjXhIDWhZeW20MEwcJrcJiJVNbVnoSc18rQkQ3Ki1OW1FeFklfIEERAQAABidzSF8HRicgWWARZCA8LA1c85FZGvnkQRoGEw9BJytOSBcToNO5blheICBj7psQU1VfST4OUgeizQ5iMk9OGUErKUwqXg0ybzBEQURXW1saLhOxxBUHAi19GmpHHWB/DyhUSDctIk5Zb0VEVVQqQ0hLRj4OJjYaSRNBYjtCPFANNjc3X1MXEvWTGj8AEQAODaLvPVNVVlcnc0wqR0I0LidCElRXFl5fKwQBCE9OJSclGlC1iSw6QjwRXjYiY11XQl9fSUmOwh1JBANBBwFqGhJWYiNfIVVYkOiAjl0Q8ZZJGn4JUh8ID0ELAxpIE0ArN0ggUkQyI2NeV10SQlNZJgQGSVxOACE2SUkZEyyQjiERTCY7LF9bSlNSVRRvTVAPBAsFIDJZUSlDIyFZJ1BBcXVhDx4SRkRTWSZDSEtGJg4wMhpfDkcwMgpuQUwhKiBIElpHRU5TKwgRCBUHFyNzSlYXRjGQgDhUQX1vDkxBEEFTVxosFAYGEwcbI5Cd+dVcbnNeK1wNBR8NDVFfQEZVSCwVGx8AQkExNlcaAlohOEg6HQ02ImNeW0NGU1dbbRAHDEELDSdzVPnVXGI3SDhUXzouY0xRVUFFW0htXFIgLi1BMSZcUxVaJz1ZKx8Pf20qWVtcEAwYey4EARoOTg+B8FUaF0Y2PF8nS0w3IGNMEkNbRU5fIABSChOtzDY6WVVWDmIDHG5VSHMcJkpHQlNY+Z0sT1AU"
+},
+{
+  id:"INC-0063", title:"Tráfego DNS anômalo com volume alto",
+  category:"Incidente de Segurança", prio:"Alta", impact:"Médio", urgency:"Alta",
+  sla:"02:00", user:"svc.analytics", asset:"SRV-ANALYTICS-02", source:"DNS / NDR",
+  context:"SRV-ANALYTICS-02 realizou 48.000 consultas DNS em 1 hora para subdomínios gerados algoritmicamente de base-metrics-cdn[.]net. Padrão: aabbcc11223344.base-metrics-cdn[.]net (30 caracteres, gerado por DGA). DGA score: 0.93. Domínio registrado há 7 dias.",
+  timeline:[
+    {t:"16:00",c:"err",txt:"DNS: SRV-ANALYTICS-02 — 48k queries/hora para base-metrics-cdn[.]net"},
+    {t:"16:01",c:"err",txt:"Subdomínios: padrão algorítmico (DGA score 0.93)"},
+    {t:"16:02",c:"err",txt:"Domínio base registrado há 7 dias, sem histórico"},
+    {t:"16:03",c:"warn",txt:"Processo gerador DNS: python.exe → não documentado em analítica"},
+  ],
+  logs:`[16:00:00] dns SRV-ANALYTICS-02 queries=48000/hr domain=*.base-metrics-cdn[.]net
+[16:00:01] dns subdomain_pattern=DGA score=0.93 avg_len=30chars random=TRUE
+[16:02:00] ti_lookup base-metrics-cdn[.]net age=7d reputation=UNKNOWN dga=CONFIRMED
+[16:03:00] edr process=python.exe parent=svchost.exe DNS_queries=HIGH not_in_baseline`,
+  actions:[
+    {label:"Escalar para N2", code:"scale_n2"},
+    {label:"Escalar incidente crítico — DNS tunneling/C2", code:"scale_critical"},
+    {label:"Encerrar — pode ser analytics legítimo", code:"close"},
+    {label:"Solicitar mais evidências", code:"more_evidence"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBDUVdWXxICAAAVBwIjPxgWVEAhPF8rbk48PTFIUUQQDAsWbxIRBhMLPjUhVVQREXh+HGITWiEgLUpiVVxXVk40Q0gdExsEbnFcXxNXIDJOJW5OPD0xSFFEEAwYeSITAAwVAU9iF317VkAhPF8rER19dnANGRAGDlEaPBQXGwgLEm07VUgXE2lzSSFc7v4hKkISXl1AVRpmQQIQFQYOLH1fQhMTJDxfLxFJPG8hTEFVXl9UX21cUi0vPUE2JlRUE18rPUpuXlhzDHENUV9fFltWOQBSGRMBAyMxU1YfVyM3SGARfjY9NURWX0AWXl9tABwIDRcVKzBJGhjw4TwNOlRAcy0iXldcW1hfGiEEFarMGggvPBpKF0Ejc0g9QkhzLCxAQl9AQltXKA8GBk9MTWA1X18SUSMwRhFGXzwhJA8IEgYOFAp9UVIYFAsTKzZJGgZcMHNFIUNMcywsQBJ0dXcaSS4OAAxBXk97YBpKF0Ejc0khXO7+ISpCElRXFg0aKQgTGkENDi9zSkgZUCcgXiERSzw9Ig1WXxJUW0koDRsHBE4PgfBVGrWaYjJDL11UJyYgXhwQ8b8aXzUHGwUVHACB9PmZGRM0OkxudWMAbyxYEnMAGBgWbwcXDAUMACE4ZUoXQTY6TCITF3Ftbw9GQltVURh3Q1U6BBwXKzdVSFZXJ3NMIFBBKjsqTkEXEkZbSCgCF0kIAA4hNlROF0FiPA06Q+7yKSZKXRB2eGkUbSwTGkEBQTIhVVkTQDE8DSDyjjxvJl5G85MWXlUuFB8MDxoAJjwaX1ZcYiNMKkPu8CBj7psQU1pdVT+i3x0MBwItfRgWVFo2OkFsCw8QIC5dXUJGV1dfIxUdSQULQQFhFV8OVSs/WTxQ7vSM4EISVV8WSV8/FxsNDhxBJjYaSgRcJibu6fKOPG9+DWIBEnVI+eAVGwoOQEM/"
+},
+{
+  id:"INC-0064", title:"Alerta de reputação baixa sem evidência adicional",
+  category:"Evento / IOC Inconclusivo", prio:"Baixa", impact:"Baixo", urgency:"Baixa",
+  sla:"06:00", user:"N/A", asset:"FW-EDGE-01", source:"Threat Intelligence / Firewall",
+  context:"Firewall registrou tráfego de saída para IP 203.0.113.55. Feed de TI classifica o IP como 'suspeito' com score 45/100. Sem bloqueio (tráfego permitido pela política). Processo de origem: Windows Update (wuauclt.exe). IP verificado: pertence ao range da Akamai CDN.",
+  timeline:[
+    {t:"18:00",c:"warn",txt:"FW: tráfego para 203.0.113.55 — TI score 45/100 (suspeito)"},
+    {t:"18:01",c:"ok",txt:"Processo gerador: wuauclt.exe (Windows Update service)"},
+    {t:"18:02",c:"ok",txt:"IP 203.0.113.55: verificado como range Akamai CDN"},
+    {t:"18:03",c:"ok",txt:"Windows Update configurado para usar CDN Akamai (política corporativa)"},
+  ],
+  logs:`[18:00:11] fw ALLOW src=WS-x dst=203.0.113.55 port=443 process=wuauclt.exe
+[18:00:12] ti score=45/100 category=SUSPICIOUS (feed: OpenTI Community)
+[18:01:00] edr process=wuauclt.exe parent=svchost.exe legit_signer=MICROSOFT
+[18:02:00] rdns 203.0.113.55 → a203-0-113-55.deploy.akamaitechnologies.com
+[18:03:00] policy WU_CDN_AKAMAI=AUTHORIZED documented=TRUE`,
+  actions:[
+    {label:"Encerrar — falso positivo de TI, contexto limpo", code:"close"},
+    {label:"Escalar para N2 — IP suspeito em TI", code:"scale_n2"},
+    {label:"Solicitar mais evidências", code:"more_evidence"},
+    {label:"Escalar incidente crítico", code:"scale_critical"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBTXllJX29NUBoCARMnDFlVBEEnMFlsCxx/bTBOXUJXaU1IIg8VS1tDUG5xTUgZXSUDSCBQQSc2YRdGQkdTFhgrBBcNAw8CKQxZVQRBJzBZbAsPECAxX1dEXRgaaS4OAAxBWlRtYgoKVlYvc0srVElzKyYNUV9fQ1RTKQAWDEGtyGI6VFkZXSE/WD1YWzxhY2RiEERTSFMrCBEIBQFBITxXVVZyKTJAL1gNEAsNDRkQQkRVWSgSAQZBAgQlkJdOH14tc2AnUl88PCxLRhBTRUlTIwAWBkFFQTI8VvnbRyswTG5SQiE/LF9TRFtAWxopDhEcDAsPNjJeW1YOYjVMIkJCcz8sXltEW0BVGikOUg8ECwViN18aInpsc2QBcg06PCxBU1RdFklfIEERBg8aBDonVRoXVzQ2Xz1eDT2M4EIS85sWU1QuCBYMDxoEbHEWGBBWJzdPL1JGDDgxQlxXEAwYaS4OAAxBWlRtYgoKVlcnc0srVElzKyYNUV9fQ1RTKQAWDEFFQQM4W1cXWmIQaQARBnMYKkNWX0VFGm89BRMdBE4AMSBTVBdXLXNdK11McwIqTkBfQVlcTm1KUhkOAqLvJ1NZFxMmPE47XEg9OyJJUxAPFlT57g5SqshOAC82W/nRUmxzZAFyDSAqLg1RX1xCX0I5DlIHos0OYiVTSBcTKz1OJ1VIPTsmAxAcEFBfXykDEwoKMREjIU5TF19gaQ9sHQ8nPSpOWRIIFGlZIhMXSQULQRYaGh0FRjEjSCdFQnRvM0xAVVFTGl87CBaqywACKzIUGjtSMXNLK1RJIG8nSBJTXVtPVCQFEw0EThWB+VcaEFIuIEJuQUIgJjdERF8SV1ZOIkECCBMPQQEXdElYEW5xRDpYQXF1YWR9cxJfSVUhABYGQQcPITxUWRpGMTpbIRFeNiJjRF9AU1VOVW0CHQcHBxMvMl5VVg5iNkMtVF8hLjENUV9fFlRVOQBcSxw="
+},
+{
+  id:"INC-0065", title:"Exfiltração suspeita para storage externo",
+  category:"Incidente de Segurança", prio:"Alta", impact:"Alto", urgency:"Alta",
+  sla:"01:30", user:"marcos.rocha", asset:"WS-DEV-088 / Proxy", source:"DLP / Proxy / UEBA",
+  context:"UEBA identificou comportamento anômalo de marcos.rocha: 4,7 GB enviados para mega.nz em 2 horas (baseline do usuário: 50 MB/semana). Arquivos enviados: pastas com naming pattern de código-fonte. marcos.rocha está em processo de desligamento (comunicado para TI há 3 dias).",
+  timeline:[
+    {t:"11:00",c:"err",txt:"UEBA: marcos.rocha — 4,7 GB para mega.nz (anomalia 9.400%)"},
+    {t:"11:01",c:"err",txt:"Arquivos: pastas src/, lib/, /api — padrão de código-fonte"},
+    {t:"11:02",c:"err",txt:"RH confirmou: marcos.rocha em processo de desligamento (D-3)"},
+    {t:"11:03",c:"warn",txt:"Acesso de marcos.rocha ainda ativo (remoção agendada para D-day)"},
+  ],
+  logs:`[11:00:22] ueba ANOMALY user=marcos.rocha dst=mega.nz bytes=4700000000 baseline=52428800
+[11:00:23] proxy OUTBOUND mega.nz user=marcos.rocha files=src/,lib/,/api duration=120min
+[11:02:00] hr_lookup marcos.rocha status=TERMINATION_PROCESS notice_date=3_days_ago
+[11:03:00] ad marcos.rocha status=ENABLED access_removal=SCHEDULED_ENDOFDAY`,
+  actions:[
+    {label:"Solicitar mais evidências", code:"more_evidence"},
+    {label:"Escalar para N2", code:"scale_n2"},
+    {label:"Encerrar — acesso ainda autorizado", code:"close"},
+    {label:"Escalar incidente crítico — exfiltração de IP", code:"scale_critical"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBDUVdWXxICAAAVBwIjPxgWVEAhPF8rbk48PTFIUUQQDAsWbxIRBhMLPjU8VBhMHnN/DzlDQj0oE0hcUV5CQxh3FQAcBEJDJDZfXhRSIThyLV5fISogWRAKEHVVSD8EBgZPTic3PVlTGV2B8l8nXg02ImNdQF9RU0lJIkEWDEEKBDE/U10XXic9WSERSD05KkxcVF0WDhZ6QTUrQQoEYjD5iRJaJTwAKF5DJypjXVNCUxZZViIUFkkRCxIxPFtWVg5iOkM9WEk2PWNZWkJXV04aYkEXEQcHDTYhW/nR8OE8DSpUDSM9LF1AWVdSW14oQRsHFQsNJzBOTxdfbHN9fwsNISo1QlVRQBZbWSgSAQZBBwwnN1NbAlIvNkM6VA17IYCOXRBXRUpfPwAASSVDBSMqExZWUiE6QiBQX3MFNl/xnVZfWVVtBFInU0EvcX0YFlRVJzZJLFBOOBA0X11eVRQAGGogEQwSHQ5iMlNUElJiMlg6Xl86NSJJXRcSWPmZIkETHBUBEyspWxoTSyQ6QTpDTJDogI5dEFZTGko/DgIbCAsFIzdfGh9dNjZBK1JZJi4vAxJ2R1hZUyIPscgTBw5iNlcaElYxP0QpUEA2ITdCEhsSAhYNbSYwSQULQSGQiV4fVC1zEG5YQyAmJ0hAEEZeSF8sFVIIFQcXLX0YFlRVJzZJLFBOOBAzTEBEW1dWGHdDUEVDGhMrMFEYTBFlEk4rQl48byJEXFRTFltOJBcdTkEeADA2WV9WXyc0RDpYQDo1Il8SXxJDSlYiABZHQSCi4TwaVhNUKydEI1ADcwBjW11cR1tfGihBEQYPGgQ6J1UaElZiN0g9XUQ0Li5IXERdFktPLA0bDwgNAC9zWVUbXGI2VShYQSc9Iu6V85FZFBhhQxsdCAJDeHFzVAVaJjZfbkVFISoiWRIbEkZIVT0TGwwFDwUnc1NUAlYuNk46REw/b34NYgEcFmhfOw4VCBNOACE2SUkZEzIhSDhUQycmNUxfVVxCXxRvHA=="
+},
+{
+  id:"INC-0066", title:"Chamado sem evidência suficiente — alerta genérico",
+  category:"Evento / Inconclusivo", prio:"Baixa", impact:"Indefinido", urgency:"Baixa",
+  sla:"06:00", user:"N/A", asset:"Desconhecido", source:"SIEM",
+  context:"SIEM gerou alerta 'Atividade Suspeita Detectada' sem campos de host, usuário, IP ou processo. Regra disparadora: custom_rule_test_001 (status: DEPRECATED, criada em 2022, sem responsável). Zero eventos correlacionados. Nenhum dado adicional disponível.",
+  timeline:[
+    {t:"07:00",c:"warn",txt:"SIEM: alerta 'Atividade Suspeita' — sem host, user, IP ou processo"},
+    {t:"07:01",c:"info",txt:"Regra: custom_rule_test_001 — status DEPRECATED desde 2023"},
+    {t:"07:02",c:"ok",txt:"Zero eventos correlacionados — regra sem base de dados atualizada"},
+    {t:"07:03",c:"info",txt:"Responsável da regra: analista demitido em 2023"},
+  ],
+  logs:`[07:00:00] siem ALERT rule=custom_rule_test_001 host=NULL user=NULL ip=NULL severity=MEDIUM
+[07:01:00] rule_mgmt custom_rule_test_001 status=DEPRECATED created=2022 last_review=NEVER
+[07:02:00] siem correlation_events=0 related_alerts=0
+[07:03:00] rule_owner contact=FORMER_EMPLOYEE status=TERMINATED_2023`,
+  actions:[
+    {label:"Escalar incidente crítico", code:"scale_critical"},
+    {label:"Solicitar revisão/desativação da regra", code:"more_evidence"},
+    {label:"Encerrar e documentar falha da regra", code:"close"},
+    {label:"Escalar para N2 — alerta SIEM é sinal", code:"scale_n2"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBTXllJX29NUBoCARMnDFlVBEEnMFlsCxx/bTBOXUJXaU1IIg8VS1teTWAkSFUYVBI2Qy9dWSpteUtTXEFTFhgrBBcNAw8CKQxZVQRBJzBZbAsPECAxX1dEXRgaaCgGAAhBCgQyIV9ZF0cnNwFuQkg+bzFIQUBdWEn57BcXBU1OEic+Gl4XVy0gAW5CSD5vIEJAQldaW/nqotEGT04oMSBVGhjw4TwNjZgNMiMmX0ZREtS6rm2i20kTG6LvN1UaElZiIUgpQ0xzNTZAUFkcFn9ULgQAGwAcTWI3VVkDXic9WS9DDTZvIk9AWUAWTlMuChcdQR4AMDIaSBNFKyDu7V4CNyowTEZZRFf5nY7CHUkFD0EwNl1IFx1ie2huQFg2PDdEXV5TRBpKIhNSGBQLQSw6VF0D8Os+DTxUWzo8LFgSQldRSFs+QRYMEgoEYmEKCEQda3EBbFdINishTFFbbUFIVSMGUFNDPAQlIVsaElYyIUgtUFk2K2NJVxBTWFtWJBIGCEEKBC86TlMSXGI0SDxQQzcgY0xeVUBCWxo7AAgADk4PgfBVGrWaYiBEIFBBc63DuRLzmxZe+eQDGx0OThWB+llUH1Atc0krEX4aCg4DEnVBVVtWLBNSHwAUCC1zVPnVXGIyRztVTHMhKkNVRfGfVxRvTVAPBAsFIDJZUSlDIyFZJ1BBcXVhDx4SRkRTWSZDSEsgAgQwJ1saElxiAGQLfA0jLjFIUVUSRV9XPRMXSRQcBic9Tl9YEw8yXm5DSDQ9Ig1WVUJEX1ksFRcNQR0EL3NeWxJcMXPu5xFMIyotTEEQQEP5lykOXEtNTAg2OlYYTBEDP0g8RUxzPCZAElNdWE5fNRUdSQULQTA2XUgXEys9TDpYWzJvfg1XXlFTSEgsE1IMQRwEJTpJTgRSMHNJjZhPOjssDUbzm1VUUy4OXEsc"
+},
+{
+  id:"INC-0067", title:"Severidade mal classificada — indisponibilidade total do ERP",
+  category:"Incidente Crítico (classificado como Baixo)", prio:"Baixa (ERRADA)", impact:"Crítico", urgency:"Alta",
+  sla:"Excedido", user:"Todos os usuários", asset:"SRV-ERP-PROD", source:"Help Desk",
+  context:"Chamado aberto como 'Baixa prioridade' pelo help desk: 'sistema lento'. Investigação revela: SRV-ERP-PROD completamente indisponível há 47 minutos. 840 usuários sem acesso. Operações financeiras e logística paradas. SLA de negócio estourado.",
+  timeline:[
+    {t:"08:00",c:"err",txt:"SRV-ERP-PROD: indisponível — 840 usuários afetados"},
+    {t:"08:47",c:"warn",txt:"Help desk abriu chamado como 'Baixa — sistema lento'"},
+    {t:"08:48",c:"err",txt:"Realidade: ERP completamente down, operações financeiras paradas"},
+    {t:"08:49",c:"err",txt:"SLA de negócio: estourado em 17 minutos (SLA = 30min para P1)"},
+  ],
+  logs:`[08:00:00] monitor SRV-ERP-PROD status=DOWN users_affected=840
+[08:47:00] helpdesk ticket=INC-0067 category=LOW description="sistema lento"
+[08:48:00] business_impact financeiro=STOPPED logistica=STOPPED operacoes=HALTED
+[08:49:00] sla_mgmt INC-0067 current_priority=LOW required_priority=CRITICAL sla_breach=TRUE`,
+  actions:[
+    {label:"Encerrar — o help desk classificou corretamente", code:"close"},
+    {label:"Reclassificar como Crítico e escalar imediatamente", code:"scale_critical"},
+    {label:"Reclassificar para Alta e escalar para N2", code:"scale_n2"},
+    {label:"Solicitar mais evidências antes de reclassificar", code:"more_evidence"},
+  ],
+  _secret: "OXFMIEJaNj1hFxBDUVdWXxICAAAVBwIjPxgWVEAhPF8rbk48PTFIUUQQDAsWbxIRBhMLPjUhVVQREXh+HGITWiEgLUpiVVxXVk40Q0gdExsEbnFcXxNXIDJOJW5OPD0xSFFEEAwYeSITAAwVAU9iaw4KVkYxJu7vQ0Q8PG8NXUBXRFv56qLHDBJOESMhW14XQG5zfgJwDTY8N0JHQlNSVRRtL7HKDk4ILyNVSAJSYjwNP0RIcyBjZXYQV0VZSCgXFxxBAA5iMFtXBlxiN0huQV86IDFEVlFWUxrYzfVSHw4NouhzTl8bEyNzXytCXTwhMExQWV5fXlspBFINBE4TJzBWWwVAKzVELVBfcypjSEFTU1pbSGNBOxoSAUExNhpZHlIvMg06Q0QyKCZAHBIeFFxfKAUQCAIFPjUhVVQREXhxCh1YXicqLkwSXFdYTlVqQQIIEw9BemcKGgNAN5CMPFhCIG8gQl8QXUZfSCyi1arUCxJiNVNUF10hNkQ8UF5zPyJfU1RTRRr55EEiWEEtE4H+TlMVXGxzbG5SQTI8MERUWVFX+Z2Owh1JBQFBChca+d8TKyFfK11IJS4tWVcQVl9bVDkEUg0OTggvI1tZAlxiIUgvXQNxY2FLV1VWVFtZJj4CCBMaCCM/GABUEW5xWTxYTjhteQ96VV5GGl4oEhlJosdBI3NcVRhHJ3NJIRFOOy4uTFZfHhZU+e4OUghBDxQ2PEhTElImNg0qVA0jPSpCQFlWV15fY0EzBwACCDEnWxo4AmIlTCJYSTJvJg1RX0BEU10oT1BFQwcVKz8YAFR6LyNMLUVCcywx7p9EW1VVGmVZRllBGxI3kJtIH1wxcwZuX0g0jPBOW18SRltILAUdQEFTQRJiGlMYVycjSCBVSD07Jg1WVRJVVls+EhsPCA0AgfT5mRkTKz1ELVhMP2FhUA=="
+},
+];
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let state = {
+  playerName: "",
+  tickets: RAW_TICKETS,
+  answers: {}, // id → {correct, points, answerCode}
+  currentId: null,
+  timers: {}, // id → intervalId
+  timerValues: {}, // id → seconds remaining
+  muted: false,
+  darkMode: true,
+  sidebarAlarmPlayed: false,
+};
+
+// ─── AUDIO ───────────────────────────────────────────────────────────────────
+let audioCtx = null;
+function getAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+function playAlarm() {
+  if (state.muted) return;
+  try {
+    const ac = getAudio();
+    [0, 0.15, 0.3].forEach(offset => {
+      const o = ac.createOscillator();
+      const g = ac.createGain();
+      o.connect(g); g.connect(ac.destination);
+      o.frequency.value = 880;
+      g.gain.setValueAtTime(0.4, ac.currentTime + offset);
+      g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + offset + 0.12);
+      o.start(ac.currentTime + offset);
+      o.stop(ac.currentTime + offset + 0.13);
+    });
+  } catch(e){}
+}
+function playCorrect() {
+  if (state.muted) return;
+  try {
+    const ac = getAudio();
+    [523, 659, 784].forEach((f, i) => {
+      const o = ac.createOscillator();
+      const g = ac.createGain();
+      o.connect(g); g.connect(ac.destination);
+      o.frequency.value = f;
+      g.gain.setValueAtTime(0.3, ac.currentTime + i*0.1);
+      g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + i*0.1 + 0.15);
+      o.start(ac.currentTime + i*0.1);
+      o.stop(ac.currentTime + i*0.1 + 0.16);
+    });
+  } catch(e){}
+}
+function playWrong() {
+  if (state.muted) return;
+  try {
+    const ac = getAudio();
+    const o = ac.createOscillator();
+    const g = ac.createGain();
+    o.connect(g); g.connect(ac.destination);
+    o.frequency.value = 220;
+    o.type = 'sawtooth';
+    g.gain.setValueAtTime(0.3, ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.4);
+    o.start(ac.currentTime);
+    o.stop(ac.currentTime + 0.41);
+  } catch(e){}
+}
+
+// ─── NAVIGATION ──────────────────────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  const showHeader = ['game','results','cert'].includes(id);
+  document.getElementById('main-header').style.display = showHeader ? 'flex' : 'none';
+}
+
+// ─── INIT GAME ────────────────────────────────────────────────────────────────
+function initGame() {
+  state.answers = {};
+  state.timers = {};
+  state.timerValues = {};
+  state.sidebarAlarmPlayed = false;
+  // Init timers
+  state.tickets.forEach(t => {
+    const parts = t.sla.split(':');
+    state.timerValues[t.id] = parseInt(parts[0]) * 60 + parseInt(parts[1] || 0);
+  });
+  renderSidebar();
+  showScreen('game');
+  state.sidebarAlarmPlayed = true;
+  updateScoreBar();
+}
+
+// ─── SIDEBAR ─────────────────────────────────────────────────────────────────
+function renderSidebar() {
+  const list = document.getElementById('ticket-list');
+  list.innerHTML = '';
+  const done = Object.keys(state.answers).length;
+  document.getElementById('sb-count').textContent = `${done}/${state.tickets.length}`;
+  state.tickets.forEach((t, i) => {
+    const div = document.createElement('div');
+    div.className = 'ticket-item';
+    div.id = 'si-' + t.id;
+    if (state.currentId === t.id) div.classList.add('active');
+    if (state.answers[t.id]) {
+      div.classList.add(state.answers[t.id].correct ? 'done-ok' : 'done-bad');
+    }
+    const prioClass = {Crítica:'critica',Alta:'alta',Média:'media','Média (ERRADA)':'media',Baixa:'baixa','Baixa (ERRADA)':'baixa'}[t.prio] || 'media';
+    div.innerHTML = `
+      <div class="ticket-id">${t.id}</div>
+      <div class="ticket-title-sm">${t.title}</div>
+      <div style="margin-top:6px"><span class="prio-badge prio-${prioClass}">${t.prio.split(' ')[0]}</span></div>
+    `;
+    div.onclick = () => openTicket(t.id);
+    list.appendChild(div);
+    // Animate new tickets
+    if (!state.sidebarAlarmPlayed && !state.answers[t.id] && i < 3) setTimeout(() => playAlarm(), i * 600);
+  });
+}
+
+// ─── OPEN TICKET ─────────────────────────────────────────────────────────────
+function openTicket(id) {
+  state.currentId = id;
+  const t = state.tickets.find(x => x.id === id);
+  renderSidebar();
+  const panel = document.getElementById('main-panel');
+  const answered = state.answers[id];
+  const prioClass = {Crítica:'critica',Alta:'alta',Média:'media','Média (ERRADA)':'media',Baixa:'baixa','Baixa (ERRADA)':'baixa'}[t.prio] || 'media';
+
+  const timeLeft = state.timerValues[id] || 0;
+  const mins = Math.floor(timeLeft / 60).toString().padStart(2,'0');
+  const secs = (timeLeft % 60).toString().padStart(2,'0');
+  const timerUrgent = timeLeft < 300 && timeLeft > 0;
+
+  // Timeline HTML
+  const tlHtml = (t.timeline || []).map(e => `
+    <div class="tl-item">
+      <div class="tl-dot ${e.c}"></div>
+      <div class="tl-time">${e.t}</div>
+      <div class="tl-text">${e.txt}</div>
+    </div>
+  `).join('');
+
+  // Action buttons
+  const actionsHtml = (t.actions || []).map(a => `
+    <button class="action-btn" onclick="submitAnswer('${id}','${a.code}')" ${answered ? 'disabled' : ''}>
+      ${a.label}
+    </button>
+  `).join('');
+
+  // Feedback
+  let feedbackHtml = '';
+  if (answered) {
+    const secret = JSON.parse(xorDecode(t._secret));
+    const cls = answered.correct ? 'correct' : 'wrong';
+    const icon = answered.correct ? '✓ Correto' : '✗ Incorreto';
+    const msg = answered.correct ? secret.feedback_correct : secret.feedback_wrong;
+    const trick = secret.trick ? `<div style="margin-top:10px;font-size:12px;color:var(--text2)"><strong>Pegadinha:</strong> ${secret.trick}</div>` : '';
+    const itil = secret.itil ? `<div style="margin-top:6px;font-size:12px;color:var(--text2)"><strong>ITIL:</strong> ${secret.itil}</div>` : '';
+    feedbackHtml = `
+      <div class="feedback-box ${cls} show">
+        <div class="feedback-title">${icon} ${answered.points > 0 ? '+1 ponto' : answered.points === 0 ? '0 pontos' : '-1 ponto'}</div>
+        <div class="feedback-text">${msg}${trick}${itil}</div>
+      </div>`;
+  }
+
+  const nextIdx = state.tickets.findIndex(x => x.id === id);
+  const nextTicket = state.tickets[nextIdx + 1];
+  const nextBtn = answered && nextTicket ? `<div class="next-wrap"><button class="btn-icon" onclick="openTicket('${nextTicket.id}')">Próximo chamado →</button></div>` : '';
+
+  const allDone = Object.keys(state.answers).length === state.tickets.length;
+
+  panel.innerHTML = `
+    <div class="ticket-header">
+      <div>
+        <div class="ticket-num">${t.id} · <span class="prio-badge prio-${prioClass}">${t.prio}</span> · ${t.category}</div>
+        <div class="ticket-title-lg">${t.title}</div>
+      </div>
+      <div class="timer-box">
+        <div class="timer-label">SLA</div>
+        <div class="timer-val ${timerUrgent ? 'urgent' : ''}" id="timer-${id}">${mins}:${secs}</div>
+      </div>
+    </div>
+
+    <div class="meta-grid">
+      <div class="meta-item"><div class="meta-label">Impacto</div><div class="meta-val">${t.impact}</div></div>
+      <div class="meta-item"><div class="meta-label">Urgência</div><div class="meta-val">${t.urgency}</div></div>
+      <div class="meta-item"><div class="meta-label">Usuário</div><div class="meta-val" style="font-family:var(--mono);font-size:12px">${t.user}</div></div>
+      <div class="meta-item"><div class="meta-label">Ativo</div><div class="meta-val" style="font-family:var(--mono);font-size:12px">${t.asset}</div></div>
+      <div class="meta-item"><div class="meta-label">Fonte</div><div class="meta-val" style="font-size:12px">${t.source}</div></div>
+      <div class="meta-item"><div class="meta-label">SLA inicial</div><div class="meta-val" style="font-family:var(--mono)">${t.sla}</div></div>
+    </div>
+
+    <div class="section-box">
+      <div class="section-head">📋 Contexto</div>
+      <div class="section-body" style="font-size:14px;line-height:1.7;font-family:'Literata',serif">${t.context}</div>
+    </div>
+
+    <div class="section-box">
+      <div class="section-head">🕐 Linha do Tempo</div>
+      <div class="section-body"><div class="timeline">${tlHtml}</div></div>
+    </div>
+
+    <div class="section-box">
+      <div class="section-head">💻 Logs</div>
+      <div class="section-body"><div class="log-block">${t.logs}</div></div>
+    </div>
+
+    ${feedbackHtml}
+
+    <div class="actions-area">
+      <div class="actions-title">Sua decisão como Analista N1</div>
+      <div class="action-btns">${actionsHtml}</div>
+    </div>
+
+    ${nextBtn}
+    ${allDone ? `<div style="text-align:center;margin:16px 0"><button class="btn-primary" style="width:auto;padding:12px 32px" onclick="showResults()">Ver Resultado Final →</button></div>` : ''}
+  `;
+
+  // Start/continue timer
+  if (!answered && !state.timers[id]) {
+    state.timers[id] = setInterval(() => tickTimer(id), 1000);
+  }
+
+  updateScoreBar();
+  if (allDone) document.getElementById('btn-finish').style.display = 'block';
+}
+
+function tickTimer(id) {
+  if (state.answers[id]) { clearInterval(state.timers[id]); return; }
+  state.timerValues[id] = Math.max(0, (state.timerValues[id] || 0) - 1);
+  const v = state.timerValues[id];
+  const mins = Math.floor(v / 60).toString().padStart(2,'0');
+  const secs = (v % 60).toString().padStart(2,'0');
+  const el = document.getElementById('timer-' + id);
+  if (el) {
+    el.textContent = `${mins}:${secs}`;
+    if (v < 300) el.classList.add('urgent'); else el.classList.remove('urgent');
+    if (v === 0) el.textContent = 'EXPIRADO';
+  }
+}
+
+// ─── ANSWER ──────────────────────────────────────────────────────────────────
+function submitAnswer(id, code) {
+  if (state.answers[id]) return;
+  const t = state.tickets.find(x => x.id === id);
+  const secret = JSON.parse(xorDecode(t._secret));
+  const correct = code === secret.answer;
+  let points = correct ? (secret.score_correct || 1) : (secret.wrongPenalty ? -1 : 0);
+  state.answers[id] = { correct, points, answerCode: code };
+  clearInterval(state.timers[id]);
+  if (correct) playCorrect(); else playWrong();
+  openTicket(id);
+  updateScoreBar();
+  renderSidebar();
+}
+
+// ─── SCORE BAR ───────────────────────────────────────────────────────────────
+function calcScore() {
+  let pts = 0, done = 0, correct = 0;
+  Object.values(state.answers).forEach(a => {
+    pts += a.points;
+    done++;
+    if (a.correct) correct++;
+  });
+  return { pts, done, correct, total: state.tickets.length };
+}
+function updateScoreBar() {
+  const {pts, done, correct, total} = calcScore();
+  document.getElementById('sb-points').textContent = pts;
+  document.getElementById('sb-done').textContent = `${done}/${total}`;
+  document.getElementById('hdr-score').textContent = `${correct}/${total}`;
+  const pct = done > 0 ? Math.round((correct/done)*100) : 0;
+  document.getElementById('sb-acc').textContent = done > 0 ? pct + '%' : '—';
+  document.getElementById('progress-fill').style.width = (done/total*100) + '%';
+}
+
+// ─── RESULTS ─────────────────────────────────────────────────────────────────
+function showResults() {
+  const {pts, done, correct, total} = calcScore();
+  const pct = Math.round((correct/total)*100);
+  const pass = pct >= 90;
+  showScreen('results');
+  const bigEl = document.getElementById('res-score-big');
+  bigEl.textContent = `${correct}/${total}`;
+  bigEl.className = 'results-score-big ' + (pass ? 'pass' : 'fail');
+  document.getElementById('res-subtitle').textContent = pass
+    ? `${pct}% de acerto — Aprovado. Parabéns, você sobreviveu à fila.`
+    : `${pct}% de acerto — Reprovado. ${100-pct}% dos chamados discordam de você.`;
+
+  let breakdown = `
+    <div class="breakdown-row"><span>Chamados respondidos</span><span>${done}/${total}</span></div>
+    <div class="breakdown-row"><span>Decisões corretas</span><span>${correct}</span></div>
+    <div class="breakdown-row"><span>Decisões incorretas</span><span>${done-correct}</span></div>
+    <div class="breakdown-row"><span>Pontuação final</span><span>${pts} ponto(s)</span></div>
+    <div class="breakdown-row"><span>Precisão</span><span>${pct}%</span></div>
+    <div class="breakdown-row"><span>Aprovação mínima</span><span>90%</span></div>
+  `;
+  document.getElementById('res-breakdown').innerHTML = breakdown;
+
+  const actDiv = document.getElementById('res-actions');
+  if (pass) {
+    actDiv.innerHTML = `<button class="btn-primary" onclick="generateCert()">🎓 Gerar Certificado</button>`;
+  } else {
+    actDiv.innerHTML = `
+      <p style="color:var(--text2);margin-bottom:16px;font-family:'Literata',serif">Você precisa de ≥90% para o certificado. Tente novamente.</p>
+      <button class="btn-primary" onclick="restartGame()">Tentar novamente</button>
+    `;
+  }
+}
+
+function restartGame() {
+  initGame();
+  openTicket(state.tickets[0].id);
+}
+
+// ─── CERTIFICATE ─────────────────────────────────────────────────────────────
+function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 10) {
+  const words = String(text).replace(/\s+/g, ' ').trim().split(' ');
+  const lines = [];
+  let line = '';
+
+  for (const word of words) {
+    const testLine = line ? line + ' ' + word : word;
+    if (ctx.measureText(testLine).width > maxWidth && line) {
+      lines.push(line);
+      line = word;
+      if (lines.length === maxLines - 1) break;
+    } else {
+      line = testLine;
+    }
+  }
+  if (line && lines.length < maxLines) lines.push(line);
+
+  lines.forEach((ln, i) => ctx.fillText(ln, x, y + (i * lineHeight)));
+  return lines.length;
+}
+
+function fitText(ctx, text, maxWidth, basePx, minPx, fontTemplate) {
+  let size = basePx;
+  do {
+    ctx.font = fontTemplate.replace('{size}', size);
+    if (ctx.measureText(text).width <= maxWidth) return size;
+    size -= 1;
+  } while (size >= minPx);
+  ctx.font = fontTemplate.replace('{size}', minPx);
+  return minPx;
+}
+
+function generateCert() {
+  showScreen('cert');
+  const {pts, correct, total} = calcScore();
+  const pct = Math.round((correct/total)*100);
+  const canvas = document.getElementById('cert-canvas');
+
+  // Canvas em alta resolução para deixar o PNG nítido e evitar letras borradas.
+  const W = 1200, H = 848;
+  canvas.width = W;
+  canvas.height = H;
+  canvas.style.width = 'min(100%, 900px)';
+  canvas.style.height = 'auto';
+
+  const ctx = canvas.getContext('2d');
+  const safeX = 118;
+  const maxTextWidth = W - (safeX * 2);
+  const centerX = W / 2;
+
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.strokeStyle = '#1a2035';
+  ctx.lineWidth = 16;
+  ctx.strokeRect(22, 22, W - 44, H - 44);
+
+  ctx.strokeStyle = '#c8a96e';
+  ctx.lineWidth = 4;
+  ctx.strokeRect(42, 42, W - 84, H - 84);
+
+  ctx.fillStyle = '#1a2035';
+  ctx.fillRect(42, 42, W - 84, 104);
+
+  ctx.fillStyle = '#c8a96e';
+  ctx.font = 'bold 30px Syne, Arial, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'alphabetic';
+  ctx.fillText('CONSULTORIA BE SAFE', centerX, 98);
+
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '12px Syne, Arial, sans-serif';
+  ctx.fillText('SIMULAÇÃO TÉCNICA DE TRIAGEM E ESCALONAMENTO EM SOC', centerX, 124);
+
+  ctx.strokeStyle = '#c8a96e';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(safeX, 174);
+  ctx.lineTo(W - safeX, 174);
+  ctx.stroke();
+
+  ctx.fillStyle = '#7a7f87';
+  ctx.font = 'bold 17px Syne, Arial, sans-serif';
+  ctx.fillText('C E R T I F I C A M O S   Q U E', centerX, 218);
+
+  const displayName = String(state.playerName || 'Participante').trim().toUpperCase();
+  fitText(ctx, displayName, maxTextWidth, 54, 30, 'bold {size}px Syne, Arial, sans-serif');
+  ctx.fillStyle = '#1a2035';
+  ctx.fillText(displayName, centerX, 292);
+
+  const nameWidth = Math.min(ctx.measureText(displayName).width + 42, maxTextWidth);
+  ctx.strokeStyle = '#c8a96e';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(centerX - nameWidth / 2, 316);
+  ctx.lineTo(centerX + nameWidth / 2, 316);
+  ctx.stroke();
+
+  ctx.fillStyle = '#3c3833';
+  ctx.font = '23px Georgia, "Times New Roman", serif';
+  const bodyText = 'concluiu com êxito o desafio N1 SOC: Fecha ou Escala?, com carga horária de 2 horas, demonstrando competência em triagem de alertas, análise de evidências, priorização ITIL, classificação de chamados, identificação de falso positivo e escalonamento operacional em SOC.';
+  drawWrappedText(ctx, bodyText, centerX, 366, maxTextWidth - 70, 32, 4);
+
+  ctx.fillStyle = '#1a2035';
+  ctx.beginPath();
+  ctx.roundRect(centerX - 136, 505, 272, 66, 12);
+  ctx.fill();
+  ctx.fillStyle = '#c8a96e';
+  ctx.font = 'bold 27px Syne, Arial, sans-serif';
+  ctx.fillText(`Score: ${pts}/${total} (${pct}%)`, centerX, 548);
+
+  ctx.strokeStyle = '#e6e0d5';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(safeX, 610);
+  ctx.lineTo(W - safeX, 610);
+  ctx.stroke();
+
+  ctx.fillStyle = '#c8a96e';
+  ctx.font = '56px "Dancing Script", "Brush Script MT", cursive';
+  ctx.fillText('Mariana BS', centerX, 676);
+
+  ctx.strokeStyle = '#1a2035';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(centerX - 160, 692);
+  ctx.lineTo(centerX + 160, 692);
+  ctx.stroke();
+
+  ctx.fillStyle = '#5f6368';
+  ctx.font = '17px Syne, Arial, sans-serif';
+  ctx.fillText('Instrutora', centerX, 722);
+
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('pt-BR', {day:'2-digit', month:'long', year:'numeric'});
+  const hashStr = 'BS-' + Math.random().toString(36).substr(2, 8).toUpperCase() + '-' + (pts * 37 + correct * 13).toString(16).toUpperCase();
+
+  ctx.fillStyle = '#7a7f87';
+  ctx.font = '14px "JetBrains Mono", Consolas, monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('Data: ' + dateStr, safeX, 782);
+  ctx.textAlign = 'center';
+  ctx.fillText('Carga horária: 2 horas', centerX, 782);
+  ctx.textAlign = 'right';
+  ctx.fillText('Hash: ' + hashStr, W - safeX, 782);
+
+  ctx.fillStyle = '#1a2035';
+  ctx.fillRect(42, H - 82, W - 84, 40);
+  ctx.fillStyle = '#c8a96e';
+  ctx.font = '15px Syne, Arial, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('N1 SOC: Fecha ou Escala? · Consultoria Be Safe', centerX, H - 56);
+}
+
+// ─── THEME & CONTROLS ────────────────────────────────────────────────────────
+document.getElementById('btn-theme').onclick = () => {
+  state.darkMode = !state.darkMode;
+  document.body.classList.toggle('light', !state.darkMode);
+  document.getElementById('btn-theme').textContent = state.darkMode ? '🌙' : '☀️';
+};
+document.getElementById('btn-mute').onclick = () => {
+  state.muted = !state.muted;
+  document.getElementById('btn-mute').textContent = state.muted ? '🔕' : '🔔';
+};
+document.getElementById('btn-start').onclick = () => {
+  const name = document.getElementById('player-name').value.trim();
+  if (!name) { document.getElementById('player-name').focus(); return; }
+  state.playerName = name;
+  initGame();
+  openTicket(state.tickets[0].id);
+};
+document.getElementById('btn-finish').onclick = showResults;
+document.getElementById('btn-back-res').onclick = () => showScreen('results');
+document.getElementById('btn-dl-cert').onclick = () => {
+  const a = document.createElement('a');
+  a.download = 'certificado-n1soc-' + state.playerName.replace(/\s+/g,'-').toLowerCase() + '.png';
+  a.href = document.getElementById('cert-canvas').toDataURL('image/png');
+  a.click();
+};
+
+// Start alarm on welcome
+setTimeout(() => { try { playAlarm(); } catch(e){} }, 800);
+</script>
+</body>
+</html>
